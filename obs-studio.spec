@@ -1,13 +1,39 @@
+#globals for obs-studio-0.14.1-20160502-3cb36bb.tar
+%global gitdate 20160502
+%global gitversion 3cb36bb
+%global snapshot %{gitdate}-%{gitversion}
+%global gver .%{gitdate}git%{gitversion}
+
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 0.14.1
-Release: 1%{?dist}
-
+Release: 2%{?gver}%{dist}
+Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
-Source: %{name}-%{version}.tar.gz
+Source: %{name}-%{version}-%{snapshot}.tar
+Source1: %{name}-snapshot.sh
+Patch: obs-ffmpeg-mux.patch
 
-BuildRequires: cmake gcc gcc-c++ pkgconfig ffmpeg-devel jansson-devel pulseaudio-libs-devel qt5-qtbase-devel qt5-qtx11extras-devel zlib-devel mesa-libGL-devel libXext-devel libxcb-devel libX11-devel libcurl-devel libv4l-devel x264-devel
+BuildRequires: cmake 
+BuildRequires: gcc 
+BuildRequires: gcc-c++ 
+BuildRequires: pkgconfig 
+BuildRequires: ffmpeg-devel 
+BuildRequires: jansson-devel 
+BuildRequires: pulseaudio-libs-devel 
+BuildRequires: qt5-qtbase-devel 
+BuildRequires: qt5-qtx11extras-devel 
+BuildRequires: zlib-devel 
+BuildRequires: mesa-libGL-devel 
+BuildRequires: libXext-devel 
+BuildRequires: libxcb-devel 
+BuildRequires: libX11-devel 
+BuildRequires: libcurl-devel 
+BuildRequires: libv4l-devel 
+BuildRequires: x264-devel 
+BuildRequires: git
+BuildRequires: desktop-file-utils
 
 %package libs
 Summary: Open Broadcaster Software Studio libraries
@@ -26,53 +52,70 @@ Library files for Open Broadcaster Software
 Header files for Open Broadcaster Software
 
 %prep
-%setup -q
+%setup -n obs-studio-0.14.1
+%patch -p0
 
 %build
-%cmake -DOBS_VERSION_OVERRIDE=%{version}
+export CPPFLAGS=-DFFMPEG_MUX_FIXED=\"%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux\"
+%cmake -DOBS_VERSION_OVERRIDE=%{version} -DUNIX_STRUCTURE=1
 %make_build
 
 %install
 %make_install
 %ifarch x86_64
-mkdir %buildroot%_libdir
-mv %buildroot%_libdir/../lib/*.so %buildroot%_libdir
-mv %buildroot%_libdir/../lib/*.so.* %buildroot%_libdir
+mkdir %{buildroot}/%{_libdir}
+mv %{buildroot}/%{_libdir}/../lib/*.so %{buildroot}/%{_libdir}
+mv %{buildroot}/%{_libdir}/../lib/*.so.* %{buildroot}/%{_libdir}
 %endif
 
+mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
+mv -f %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
+
+%check
+desktop-file-validate %{buildroot}/%{_datadir}/applications/obs.desktop
+
 %post
-/sbin/ldconfig
 update-desktop-database >&/dev/null || :
-touch --no-create %_datadir/icons/hicolor >&/dev/null || :
+touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
 
 %postun
-/sbin/ldconfig
 update-desktop-database >&/dev/null || :
 if [ $1 -eq 0 ]; then
- touch --no-create %_datadir/icons/hicolor >&/dev/null || :
- gtk-update-icon-cache %_datadir/icons/hicolor >&/dev/null || :
+ touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
+ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 fi
 
+%post libs -p /sbin/ldconfig
+
+%postun libs -p /sbin/ldconfig
+
 %posttrans
-gtk-update-icon-cache %_datadir/icons/hicolor >&/dev/null || :
+gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 
 %files
-%_bindir/obs
-%_datadir/applications/obs.desktop
-%_datadir/icons/hicolor/256x256/apps/obs.png
-%_datadir/obs/
 %doc README COPYING
+%{_bindir}/obs
+%{_datadir}/applications/obs.desktop
+%{_datadir}/icons/hicolor/256x256/apps/obs.png
+%{_datadir}/obs/
+%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
 
 %files libs
-%_libdir/../lib/obs-plugins/
-%_libdir/*.so.*
+%{_libdir}/../lib/obs-plugins/
+%{_libdir}/*.so.*
 
 %files devel
-%_libdir/../lib/cmake/LibObs/
-%_libdir/*.so
-%_includedir/obs/
+%{_libdir}/../lib/cmake/LibObs/
+%{_libdir}/*.so
+%{_includedir}/obs/
 
 %changelog
+
+* Mon May 02 2016 David Vasquez <davidjeremias82 at gmail dot com> - 0.14.1-20160502-3cb36bb-2
+- Fixed Shared libraries
+- Added desktop-file-validate check
+- Fixed arch-dependent-file-in-usr-share
+
 * Tue Apr 26 2016 Yiwan <caoli5288@gmail.com> - 0.14.1-1
 - Updated to 0.14.1
 
