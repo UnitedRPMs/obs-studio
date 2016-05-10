@@ -4,42 +4,43 @@
 %global snapshot %{gitdate}-%{gitversion}
 %global gver .%{gitdate}git%{gitversion}
 
-Summary: Open Broadcaster Software Studio
-Name: obs-studio
-Version: 0.14.1
-Release: 2%{?gver}%{dist}
-Group: Applications/Multimedia
-URL: https://obsproject.com/
-License: GPLv2+ 
-Source: %{name}-%{version}-%{snapshot}.tar
-Source1: %{name}-snapshot.sh
-Patch: obs-ffmpeg-mux.patch
+Name:           obs-studio
+Version:        0.14.1
+Release:        2%{?gver}%{dist}
+Summary:        Open Broadcaster Software Studio
+Group:          Applications/Multimedia
+License:        GPLv2+
+URL:            https://obsproject.com/
+Source:         %{name}-%{version}-%{snapshot}.tar
+Source1:        %{name}-snapshot.sh
+Patch:          obs-ffmpeg-mux.patch
 
-BuildRequires: cmake 
-BuildRequires: gcc 
-BuildRequires: gcc-c++ 
-BuildRequires: pkgconfig 
-BuildRequires: ffmpeg-devel 
-BuildRequires: jansson-devel 
-BuildRequires: pulseaudio-libs-devel 
-BuildRequires: qt5-qtbase-devel 
-BuildRequires: qt5-qtx11extras-devel 
-BuildRequires: zlib-devel 
-BuildRequires: mesa-libGL-devel 
-BuildRequires: libXext-devel 
-BuildRequires: libxcb-devel 
-BuildRequires: libX11-devel 
-BuildRequires: libcurl-devel 
-BuildRequires: libv4l-devel 
-BuildRequires: x264-devel 
-BuildRequires: git
-BuildRequires: desktop-file-utils
+BuildRequires:  desktop-file-utils
+
+BuildRequires:  gcc
+BuildRequires:  gcc-c++
+BuildRequires:  cmake
+BuildRequires:  libX11-devel
+BuildRequires:  mesa-libGL-devel
+BuildRequires:  ffmpeg-devel
+BuildRequires:  libv4l-devel
+BuildRequires:  pulseaudio-libs-devel
+BuildRequires:  x264-devel
+BuildRequires:  zlib-devel
+BuildRequires:  libXext-devel
+BuildRequires:  libxcb-devel
+BuildRequires:  libcurl-devel
+BuildRequires:  qt5-qtbase-devel
+BuildRequires:  qt5-qtx11extras-devel
+BuildRequires:  jansson-devel
+BuildRequires:  git
+BuildRequires:  pkgconfig
 
 %package libs
-Summary: Open Broadcaster Software Studio libraries
+Summary:        Open Broadcaster Software Studio libraries
 
 %package devel
-Summary: Open Broadcaster Software Studio header files
+Summary:        Open Broadcaster Software Studio header files
 
 %description
 Open Broadcaster Software is free and open source
@@ -50,6 +51,7 @@ Library files for Open Broadcaster Software
 
 %description devel
 Header files for Open Broadcaster Software
+
 
 %prep
 %setup -n obs-studio-0.14.1
@@ -81,8 +83,8 @@ touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
 %postun
 update-desktop-database >&/dev/null || :
 if [ $1 -eq 0 ]; then
- touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
- gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
+  touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
+  gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 fi
 
 %post libs -p /sbin/ldconfig
