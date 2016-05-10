@@ -1,6 +1,7 @@
 #globals for obs-studio-0.14.1-20160502-3cb36bb.tar
 %global gitdate 20160502
-%global gitversion 3cb36bb
+%global commit1 3cb36bbd5154163a442915f703002d4b0ce16f84
+%global gitversion %(c=%{commit1}; echo ${c:0:7})
 %global snapshot %{gitdate}-%{gitversion}
 %global gver .%{gitdate}git%{gitversion}
 
@@ -11,8 +12,7 @@ Summary:        Open Broadcaster Software Studio
 Group:          Applications/Multimedia
 License:        GPLv2+
 URL:            https://obsproject.com/
-Source:         %{name}-%{version}-%{snapshot}.tar
-Source1:        %{name}-snapshot.sh
+Source:         https://github.com/jp9000/%{name}/archive/%{commit1}.tar.gz#/%{name}-%{version}-%{snapshot}.tar.gz
 Patch:          obs-ffmpeg-mux.patch
 
 BuildRequires:  desktop-file-utils
@@ -33,8 +33,8 @@ BuildRequires:  libcurl-devel
 BuildRequires:  qt5-qtbase-devel
 BuildRequires:  qt5-qtx11extras-devel
 BuildRequires:  jansson-devel
-BuildRequires:  git
-BuildRequires:  pkgconfig
+#BuildRequires:  git
+#BuildRequires:  pkgconfig
 
 %package libs
 Summary:        Open Broadcaster Software Studio libraries
@@ -54,7 +54,7 @@ Header files for Open Broadcaster Software
 
 
 %prep
-%setup -n obs-studio-0.14.1
+%setup -qn obs-studio-%{commit1}
 %patch -p0
 
 %build
