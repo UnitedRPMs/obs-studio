@@ -26,15 +26,16 @@ BuildRequires:  ffmpeg-devel
 BuildRequires:  libv4l-devel
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:  x264-devel
-BuildRequires:  zlib-devel
-BuildRequires:  libXext-devel
-BuildRequires:  libxcb-devel
-BuildRequires:  libcurl-devel
+BuildRequires:  freetype-devel
+BuildRequires:  fontconfig-devel
+BuildRequires:  libXcomposite-devel
+BuildRequires:  libXinerama-devel
 BuildRequires:  qt5-qtbase-devel
 BuildRequires:  qt5-qtx11extras-devel
 BuildRequires:  jansson-devel
-#BuildRequires:  git
-#BuildRequires:  pkgconfig
+BuildRequires:  jack-audio-connection-kit-devel
+BuildRequires:  libcurl-devel
+Requires:       ffmpeg x264
 
 %package libs
 Summary:        Open Broadcaster Software Studio libraries
@@ -55,26 +56,24 @@ Header files for Open Broadcaster Software
 
 %prep
 %setup -qn obs-studio-%{commit1}
-%patch -p0
+#patch -p0
+
+# rpmlint reports E: hardcoded-library-path
+# replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
+sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
 
 %build
-export CPPFLAGS=-DFFMPEG_MUX_FIXED=\"%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux\"
+#export CPPFLAGS=-DFFMPEG_MUX_FIXED=%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
 %cmake -DOBS_VERSION_OVERRIDE=%{version} -DUNIX_STRUCTURE=1
 %make_build
 
 %install
 %make_install
-%ifarch x86_64
-mkdir %{buildroot}/%{_libdir}
-mv %{buildroot}/%{_libdir}/../lib/*.so %{buildroot}/%{_libdir}
-mv %{buildroot}/%{_libdir}/../lib/*.so.* %{buildroot}/%{_libdir}
-%endif
 
-mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
-mv -f %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
+#mkdir -p %{buildroot}%{_libexecdir}/obs-plugins/obs-ffmpeg/
+#mv -f %{buildroot}%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
 
-%check
-desktop-file-validate %{buildroot}/%{_datadir}/applications/obs.desktop
+desktop-file-validate %{buildroot}%{_datadir}/applications/obs.desktop
 
 %post
 update-desktop-database >&/dev/null || :
@@ -95,19 +94,20 @@ fi
 gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 
 %files
-%doc README COPYING
+%doc README
+%license COPYING
 %{_bindir}/obs
 %{_datadir}/applications/obs.desktop
 %{_datadir}/icons/hicolor/256x256/apps/obs.png
 %{_datadir}/obs/
-%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
+#{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
 
 %files libs
-%{_libdir}/../lib/obs-plugins/
+%{_libdir}/obs-plugins/
 %{_libdir}/*.so.*
 
 %files devel
-%{_libdir}/../lib/cmake/LibObs/
+%{_libdir}/cmake/LibObs/
 %{_libdir}/*.so
 %{_includedir}/obs/
 
