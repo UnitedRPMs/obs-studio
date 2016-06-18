@@ -34,6 +34,13 @@ BuildRequires: libv4l-devel
 BuildRequires: x264-devel 
 BuildRequires: git
 BuildRequires: desktop-file-utils
+BuildRequires: freetype-devel
+BuildRequires: fontconfig-devel
+BuildRequires: jack-audio-connection-kit-devel
+BuildRequires: jansson-devel
+BuildRequires: pulseaudio-libs-devel
+BuildRequires: libXcomposite-devel
+
 
 %package libs
 Summary: Open Broadcaster Software Studio libraries
