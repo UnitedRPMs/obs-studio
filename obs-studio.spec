@@ -7,7 +7,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 0.14.2
-Release: 1%{?gver}%{dist}
+Release: 2%{?gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
