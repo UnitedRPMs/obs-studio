@@ -13,7 +13,7 @@ URL: https://obsproject.com/
 License: GPLv2+ 
 Source: %{name}-%{version}-%{snapshot}.tar
 Source1: %{name}-snapshot.sh
-# Patch: obs-ffmpeg-mux.patch
+Patch: obs-ffmpeg-mux.patch
 
 BuildRequires: cmake 
 BuildRequires: gcc 
@@ -62,6 +62,7 @@ Header files for Open Broadcaster Software
 %setup -n %{name}-%{version}
 
 %build
+export CPPFLAGS=-DFFMPEG_MUX_FIXED=\"%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux\"
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
 %ifarch x86_64 
       -DOBS_MULTIARCH_SUFFIX=64 \
@@ -72,6 +73,10 @@ make %{?_smp_mflags}
 
 %install
 %make_install
+
+mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
+mv -f %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
+ln -sf %{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux
 
 %check
 desktop-file-validate %{buildroot}/%{_datadir}/applications/obs.desktop
@@ -100,6 +105,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/applications/obs.desktop
 %{_datadir}/icons/hicolor/256x256/apps/obs.png
 %{_datadir}/obs/
+%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
 
 %files libs
 %{_libdir}/obs-plugins/
