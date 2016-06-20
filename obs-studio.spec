@@ -7,7 +7,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 0.14.2
-Release: 2%{?gver}%{dist}
+Release: 3%{?gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -41,6 +41,7 @@ BuildRequires: fdk-aac-devel
 BuildRequires: ImageMagick-devel
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
+Requires:      ffmpeg x264
 
 %package libs
 Summary: Open Broadcaster Software Studio libraries
@@ -60,26 +61,25 @@ Header files for Open Broadcaster Software
 
 %prep
 %setup -n %{name}-%{version}
+#patch -p0
+# rpmlint reports E: hardcoded-library-path
+# replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
+sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
 
 %build
-export CPPFLAGS=-DFFMPEG_MUX_FIXED=\"%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux\"
-cmake -DCMAKE_INSTALL_PREFIX=/usr \
-%ifarch x86_64 
-      -DOBS_MULTIARCH_SUFFIX=64 \
-%endif
-      -DOBS_VERSION_OVERRIDE=%{version} .
-
-make %{?_smp_mflags}
+#export CPPFLAGS=-DFFMPEG_MUX_FIXED=%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
+%cmake -DOBS_VERSION_OVERRIDE=%{version} -DUNIX_STRUCTURE=1
+%make_build
 
 %install
 %make_install
 
-mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
-mv -f %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
-ln -sf %{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux
+#mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
+#mv -f %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
+#ln -sf %{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux
 
 %check
-desktop-file-validate %{buildroot}/%{_datadir}/applications/obs.desktop
+desktop-file-validate %{buildroot}%{_datadir}/applications/obs.desktop
 
 %post
 update-desktop-database >&/dev/null || :
@@ -100,12 +100,13 @@ fi
 gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 
 %files
-%doc README COPYING
+%doc README
+%license COPYING
 %{_bindir}/obs
 %{_datadir}/applications/obs.desktop
 %{_datadir}/icons/hicolor/256x256/apps/obs.png
 %{_datadir}/obs/
-%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
+#%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
 
 %files libs
 %{_libdir}/obs-plugins/
@@ -117,6 +118,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_includedir}/obs/
 
 %changelog
+* Mon Jun 20 2016 Pavlo Rudyi <paulcarroty at riseup net> - 0.14.2-3-20160618gite3deb71
+- Include the previos changes by Sergio Basto
 
 * Sat Jun 18 2016 David Vasquez <davidjeremias82 at gmail dot com> - 0.14.2-2-20160618gite3deb71
 - Enabled linux-capture
