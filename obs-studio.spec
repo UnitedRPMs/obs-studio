@@ -41,6 +41,7 @@ BuildRequires: fdk-aac-devel
 BuildRequires: ImageMagick-devel
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
+BuildRequires: systemd-devel
 Requires:      ffmpeg x264
 
 %package libs
