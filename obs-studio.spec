@@ -7,7 +7,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 0.14.2
-Release: 3%{?gver}%{dist}
+Release: 4%{?gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -37,7 +37,7 @@ BuildRequires: desktop-file-utils
 BuildRequires: libXcomposite-devel
 BuildRequires: libXinerama-devel
 BuildRequires: libXrandr-devel
-BuildRequires: fdk-aac-devel
+BuildRequires: faac-devel
 BuildRequires: ImageMagick-devel
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
@@ -119,6 +119,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_includedir}/obs/
 
 %changelog
+* Thu Jun 23 2016 Pavlo Rudyi <paulcarroty at riseup net> - 0.14.2-4-20160618gite3deb71
+- Add faac-devel depends for recording crash
+
 * Mon Jun 20 2016 Pavlo Rudyi <paulcarroty at riseup net> - 0.14.2-3-20160618gite3deb71
 - Include the previos changes by Sergio Basto
 
