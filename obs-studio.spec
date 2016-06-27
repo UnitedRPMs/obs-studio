@@ -7,7 +7,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 0.14.2
-Release: 4%{?gver}%{dist}
+Release: 5%{?gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -119,6 +119,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_includedir}/obs/
 
 %changelog
+* Sun Jun 26 2016 The UnitedRPMs Project (Key for UnitedRPMs infrastructure) <unitedrpms@protonmail.com> - 0.14.2-5.20160618gite3deb71
+- Rebuild with new ffmpeg
+
 * Thu Jun 23 2016 Pavlo Rudyi <paulcarroty at riseup net> - 0.14.2-4-20160618gite3deb71
 - Add faac-devel depends for recording crash
 
