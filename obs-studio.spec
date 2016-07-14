@@ -7,13 +7,13 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 0.14.2
-Release: 5%{?gver}%{dist}
+Release: 6%{?gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
 Source: %{name}-%{version}-%{snapshot}.tar
 Source1: %{name}-snapshot.sh
-Patch: obs-ffmpeg-mux.patch
+# Patch: obs-ffmpeg-mux.patch
 
 BuildRequires: cmake 
 BuildRequires: gcc 
@@ -119,6 +119,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_includedir}/obs/
 
 %changelog
+
+* Thu Jul 07 2016 David Vásquez <davidjeremias82 AT gmail DOT com> 0.14.2-6.20160618gite3deb7
+- Rebuilt for FFmpeg 3.1 
+
 * Sun Jun 26 2016 The UnitedRPMs Project (Key for UnitedRPMs infrastructure) <unitedrpms@protonmail.com> - 0.14.2-5.20160618gite3deb71
 - Rebuild with new ffmpeg
 
