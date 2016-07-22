@@ -1,13 +1,13 @@
 #globals for obs-studio-0.14.2-20160618-e3deb71.tar
-%global gitdate 20160618
-%global gitversion e3deb71
+%global gitdate 20160722
+%global gitversion 67ac11f
 %global snapshot %{gitdate}-%{gitversion}
 %global gver .%{gitdate}git%{gitversion}
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 0.14.2
-Release: 6%{?gver}%{dist}
+Version: 0.15.2
+Release: 1%{?gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -17,11 +17,13 @@ Source1: %{name}-snapshot.sh
 
 BuildRequires: cmake 
 BuildRequires: gcc 
-BuildRequires: gcc-c++ 
+BuildRequires: gcc-c++
+BuildRequires: gcc-objc 
 BuildRequires: pkgconfig 
 BuildRequires: ffmpeg-devel 
 BuildRequires: jansson-devel 
-BuildRequires: pulseaudio-libs-devel 
+BuildRequires: pulseaudio-libs-devel
+BuildRequires: jack-audio-connection-kit-devel 
 BuildRequires: qt5-qtbase-devel 
 BuildRequires: qt5-qtx11extras-devel 
 BuildRequires: zlib-devel 
@@ -119,6 +121,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_includedir}/obs/
 
 %changelog
+* Fri Jul 22 2016 Pavlo Rudyi <paulcarroty at riseup net> - 0.15-1
+- Update to 0.15.2 
 
 * Thu Jul 07 2016 David Vásquez <davidjeremias82 AT gmail DOT com> 0.14.2-6.20160618gite3deb7
 - Rebuilt for FFmpeg 3.1 
