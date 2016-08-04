@@ -3,6 +3,7 @@
 set -x
 
 tmp=$(mktemp -d)
+tmp=obs-studio
 
 trap cleanup EXIT
 cleanup() {
@@ -24,6 +25,7 @@ git checkout ${branch}
 tag=$(git rev-list HEAD -n 1 | cut -c 1-7)
 version=`git describe --tags | awk -F '-' '{print $1}' | tr -d 'v'`
 git archive --prefix="${name}-${version}/" --format=tar master > "$pwd"/${name}-${version}-${date}-${tag}.tar
+gzip "$pwd"/${name}-${version}-${date}-${tag}.tar
 
 
 
