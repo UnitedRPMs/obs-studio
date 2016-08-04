@@ -1,6 +1,7 @@
 #globals for obs-studio-0.15.2-20160618-e3deb71.tar
-%global gitdate 20160722
-%global gitversion 67ac11f
+%global gitdate 20160803
+%global commit ed829e93aea15f600e2fe15778cf640149da1b6c
+%global gitversion %(c=%{commit}; echo ${c:0:7})
 %global snapshot %{gitdate}-%{gitversion}
 %global gver .%{gitdate}git%{gitversion}
 
@@ -11,9 +12,9 @@ Summary:        Open Broadcaster Software Studio
 Group:          Applications/Multimedia
 License:        GPLv2+
 URL:            https://obsproject.com/
-Source: https://github.com/jp9000/%{name}/archive/%{commit1}/%{name}-%{version}-%{snapshot}.tar.gz
-Source1: %{name}-snapshot.sh
-# Patch: obs-ffmpeg-mux.patch
+Source:         https://github.com/jp9000/%{name}/archive/%{commit}/%{name}-%{version}-%{snapshot}.tar.gz
+#Source1:        %{name}-snapshot.sh
+#Patch: obs-ffmpeg-mux.patch
 
 BuildRequires:  desktop-file-utils
 
@@ -64,7 +65,7 @@ Library files for Open Broadcaster Software
 Header files for Open Broadcaster Software
 
 %prep
-%setup -qn %{name}-%{version}
+%setup -qn %{name}-%{commit}
 #patch -p0
 # rpmlint reports E: hardcoded-library-path
 # replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
