@@ -1,58 +1,56 @@
-#globals for obs-studio-0.15.2-20160618-e3deb71.tar
-%global gitdate 20160803
-%global commit ed829e93aea15f600e2fe15778cf640149da1b6c
-%global gitversion %(c=%{commit}; echo ${c:0:7})
+#globals for obs-studio-0.14.2-20160618-e3deb71.tar
+%global gitdate 20160816
+%global gitversion eca0ca8
 %global snapshot %{gitdate}-%{gitversion}
 %global gver .%{gitdate}git%{gitversion}
 
-Name:           obs-studio
-Version:        0.15.2
-Release:        1%{?gver}%{dist}
-Summary:        Open Broadcaster Software Studio
-Group:          Applications/Multimedia
-License:        GPLv2+
-URL:            https://obsproject.com/
-Source:         https://github.com/jp9000/%{name}/archive/%{commit}/%{name}-%{version}-%{snapshot}.tar.gz
-#Source1:        %{name}-snapshot.sh
-#Patch: obs-ffmpeg-mux.patch
+Summary: Open Broadcaster Software Studio
+Name: obs-studio
+Version: 0.15.4
+Release: 1%{?gver}%{dist}
+Group: Applications/Multimedia
+URL: https://obsproject.com/
+License: GPLv2+ 
+Source: %{name}-%{version}-%{snapshot}.tar
+Source1: %{name}-snapshot.sh
+# Patch: obs-ffmpeg-mux.patch
 
-BuildRequires:  desktop-file-utils
-
-BuildRequires:  cmake
-BuildRequires:  gcc
-BuildRequires:  gcc-c++
-BuildRequires:  gcc-objc
-BuildRequires:  pkgconfig
-BuildRequires:  zlib-devel
-BuildRequires:  libXext-devel
-BuildRequires:  libxcb-devel
-BuildRequires:  libX11-devel
-BuildRequires:  mesa-libGL-devel
-BuildRequires:  ffmpeg-devel
-BuildRequires:  libv4l-devel
-BuildRequires:  pulseaudio-libs-devel
-BuildRequires:  x264-devel
-BuildRequires:  git
-BuildRequires:  libXrandr-devel
-BuildRequires:  faac-devel
-BuildRequires:  ImageMagick-devel
-BuildRequires:  freetype-devel
-BuildRequires:  fontconfig-devel
-BuildRequires:  libXcomposite-devel
-BuildRequires:  libXinerama-devel
-BuildRequires:  qt5-qtbase-devel
-BuildRequires:  qt5-qtx11extras-devel
-BuildRequires:  jansson-devel
-BuildRequires:  jack-audio-connection-kit-devel
-BuildRequires:  libcurl-devel
-BuildRequires:  systemd-devel
-Requires:       ffmpeg x264
+BuildRequires: cmake 
+BuildRequires: gcc 
+BuildRequires: gcc-c++
+BuildRequires: gcc-objc 
+BuildRequires: pkgconfig 
+BuildRequires: ffmpeg-devel 
+BuildRequires: jansson-devel 
+BuildRequires: pulseaudio-libs-devel
+BuildRequires: jack-audio-connection-kit-devel 
+BuildRequires: qt5-qtbase-devel 
+BuildRequires: qt5-qtx11extras-devel 
+BuildRequires: zlib-devel 
+BuildRequires: mesa-libGL-devel 
+BuildRequires: libXext-devel 
+BuildRequires: libxcb-devel 
+BuildRequires: libX11-devel 
+BuildRequires: libcurl-devel 
+BuildRequires: libv4l-devel 
+BuildRequires: x264-devel 
+BuildRequires: git
+BuildRequires: desktop-file-utils
+BuildRequires: libXcomposite-devel
+BuildRequires: libXinerama-devel
+BuildRequires: libXrandr-devel
+BuildRequires: faac-devel
+BuildRequires: ImageMagick-devel
+BuildRequires: freetype-devel
+BuildRequires: fontconfig-devel
+BuildRequires: systemd-devel
+Requires:      ffmpeg x264
 
 %package libs
-Summary:        Open Broadcaster Software Studio libraries
+Summary: Open Broadcaster Software Studio libraries
 
 %package devel
-Summary:        Open Broadcaster Software Studio header files
+Summary: Open Broadcaster Software Studio header files
 
 %description
 Open Broadcaster Software is free and open source
@@ -65,7 +63,7 @@ Library files for Open Broadcaster Software
 Header files for Open Broadcaster Software
 
 %prep
-%setup -qn %{name}-%{commit}
+%setup -n %{name}-%{version}
 #patch -p0
 # rpmlint reports E: hardcoded-library-path
 # replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
@@ -93,8 +91,8 @@ touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
 %postun
 update-desktop-database >&/dev/null || :
 if [ $1 -eq 0 ]; then
-  touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
-  gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
+ touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
+ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 fi
 
 %post libs -p /sbin/ldconfig
@@ -111,7 +109,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/applications/obs.desktop
 %{_datadir}/icons/hicolor/256x256/apps/obs.png
 %{_datadir}/obs/
-#{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
+#%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
 
 %files libs
 %{_libdir}/obs-plugins/
@@ -123,7 +121,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_includedir}/obs/
 
 %changelog
-* Fri Jul 22 2016 Pavlo Rudyi <paulcarroty at riseup net> - 0.15-1
+* Tue Aug 16 2016 Pavlo Rudyi <paulcarroty at riseup.net> - 0.15.4-1 
+- Update to 0.15.4
+
+* Fri Jul 22 2016 Pavlo Rudyi <paulcarroty at riseup net> - 0.15.2-1
 - Update to 0.15.2 
 
 * Thu Jul 07 2016 David Vásquez <davidjeremias82 AT gmail DOT com> 0.14.2-6.20160618gite3deb7
