@@ -1,20 +1,16 @@
 #globals for obs-studio-0.14.2-20160618-e3deb71.tar
-%global gitdate 20160816
-%global gitversion eca0ca8
-%global snapshot %{gitdate}-%{gitversion}
-%global gver .%{gitdate}git%{gitversion}
+%global gitdate 20161006
+%global commit0 986edc84c4daff1852b94d1b7557f299ff54504c
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 0.15.4
-Release: 1%{?gver}%{dist}
+Version: 0.16.2
+Release: 1.%{gitdate}git%{shortcommit0}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
-Source: %{name}-%{version}-%{snapshot}.tar
-Source1: %{name}-snapshot.sh
-# Patch: obs-ffmpeg-mux.patch
-
+Source0:  https://github.com/jp9000/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 BuildRequires: cmake 
 BuildRequires: gcc 
 BuildRequires: gcc-c++
@@ -44,6 +40,7 @@ BuildRequires: ImageMagick-devel
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
 BuildRequires: systemd-devel
+BuildRequires:  doxygen 
 Requires:      ffmpeg x264
 
 %package libs
@@ -63,7 +60,8 @@ Library files for Open Broadcaster Software
 Header files for Open Broadcaster Software
 
 %prep
-%setup -n %{name}-%{version}
+%autosetup -n %{name}-%{commit0}
+
 #patch -p0
 # rpmlint reports E: hardcoded-library-path
 # replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
@@ -121,6 +119,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_includedir}/obs/
 
 %changelog
+* Thu Oct 06 2016 Pavlo Rudyi <paulcarroty at riseup.net> - 0.16.2-1
+- Update to 0.16.2
+
 * Tue Aug 16 2016 Pavlo Rudyi <paulcarroty at riseup.net> - 0.15.4-1 
 - Update to 0.15.4
 
