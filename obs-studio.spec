@@ -101,13 +101,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 
 %files
 %doc README
-%license COPYING
 %license UI/data/license/gplv2.txt
+%license COPYING
 %{_bindir}/obs
 %{_datadir}/applications/obs.desktop
 %{_datadir}/icons/hicolor/256x256/apps/obs.png
 %{_datadir}/obs/
-#%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
+%{_libexecdir}/obs-plugins/
 
 %files libs
 %{_libdir}/obs-plugins/
@@ -117,6 +117,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/cmake/LibObs/
 %{_libdir}/*.so
 %{_includedir}/obs/
+
+%files doc
+%doc docs/html
 
 %changelog
 * Sun Jan 08 2017 Pavlo Rudyi <paulcarroty at riseup.net> - 17.0.0-1
