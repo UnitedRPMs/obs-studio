@@ -42,21 +42,32 @@ BuildRequires: systemd-devel
 BuildRequires:  doxygen 
 Requires:      ffmpeg x264
 
-%package libs
-Summary: Open Broadcaster Software Studio libraries
-
-%package devel
-Summary: Open Broadcaster Software Studio header files
-
 %description
 Open Broadcaster Software is free and open source
 software for video recording and live streaming.
 
+%package libs
+Summary: Open Broadcaster Software Studio libraries
+Requires: %{name}%{?_isa} = %{version}-%{release}
+
 %description libs
 Library files for Open Broadcaster Software
 
+%package devel
+Summary: Open Broadcaster Software Studio header files
+Requires: %{name}%{?_isa} = %{version}-%{release}
+
 %description devel
 Header files for Open Broadcaster Software
+
+%package        doc
+Summary:        Documentation files for %{name}
+Group:          Documentation
+BuildArch:      noarch
+
+%description    doc
+The %{name}-doc package contains html documentation
+that use %{name}.
 
 %prep
 %autosetup -n %{name}-%{commit0}
@@ -66,38 +77,39 @@ Header files for Open Broadcaster Software
 sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
 
 %build
-#export CPPFLAGS=-DFFMPEG_MUX_FIXED=%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
 %cmake -DOBS_VERSION_OVERRIDE=%{version} -DUNIX_STRUCTURE=1
 %make_build
+
+# build docs
 doxygen
 
 %install
 %make_install
+
 mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
 mv -f %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux \
       %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
 
-
 %check
-desktop-file-validate %{buildroot}%{_datadir}/applications/obs.desktop
-
-%post
-update-desktop-database >&/dev/null || :
-touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
-
-%postun
-update-desktop-database >&/dev/null || :
-if [ $1 -eq 0 ]; then
- touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
- gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
-fi
+/usr/bin/desktop-file-validate %{buildroot}/%{_datadir}/applications/obs.desktop
 
 %post libs -p /sbin/ldconfig
+
+%post
+/usr/bin/update-desktop-database >&/dev/null || :
+/usr/bin/touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
+
+%postun
+/usr/bin/update-desktop-database >&/dev/null || :
+if [ $1 -eq 0 ]; then
+  /usr/bin/touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
+  /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
+fi
 
 %postun libs -p /sbin/ldconfig
 
 %posttrans
-gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 
 %files
 %doc README
