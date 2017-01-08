@@ -1,11 +1,10 @@
-#globals for obs-studio-0.14.2-20160618-e3deb71.tar
-%global gitdate 20161006
-%global commit0 986edc84c4daff1852b94d1b7557f299ff54504c
+%global gitdate 20170108
+%global commit0 25886047516c1824736fe6952f2b3c6ae7475869
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 0.16.2
+Version: 17.0.0
 Release: 1.%{gitdate}git%{shortcommit0}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
@@ -62,7 +61,6 @@ Header files for Open Broadcaster Software
 %prep
 %autosetup -n %{name}-%{commit0}
 
-#patch -p0
 # rpmlint reports E: hardcoded-library-path
 # replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
 sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
@@ -71,13 +69,14 @@ sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
 #export CPPFLAGS=-DFFMPEG_MUX_FIXED=%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
 %cmake -DOBS_VERSION_OVERRIDE=%{version} -DUNIX_STRUCTURE=1
 %make_build
+doxygen
 
 %install
 %make_install
+mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
+mv -f %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux \
+      %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
 
-#mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
-#mv -f %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
-#ln -sf %{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/obs.desktop
@@ -103,6 +102,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %files
 %doc README
 %license COPYING
+%license UI/data/license/gplv2.txt
 %{_bindir}/obs
 %{_datadir}/applications/obs.desktop
 %{_datadir}/icons/hicolor/256x256/apps/obs.png
@@ -119,6 +119,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_includedir}/obs/
 
 %changelog
+* Sun Jan 08 2017 Pavlo Rudyi <paulcarroty at riseup.net> - 17.0.0-1
+- Update to 17.0.0
+
 * Thu Oct 06 2016 Pavlo Rudyi <paulcarroty at riseup.net> - 0.16.2-1
 - Update to 0.16.2
 
