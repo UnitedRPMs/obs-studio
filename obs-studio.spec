@@ -1,10 +1,10 @@
-%global gitdate 20170108
-%global commit0 25886047516c1824736fe6952f2b3c6ae7475869
+%global gitdate 20170226
+%global commit0 c8d08932fb4b0362056bcd0724a2adcfabacdfba
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 17.0.0
+Version: 17.0.2
 Release: 1.%{gitdate}git%{shortcommit0}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
@@ -134,6 +134,10 @@ fi
 %doc docs/html
 
 %changelog
+
+* Sun Feb 26 2017 David Vásquez <davidjeremias82 AT gmail DOT com> 17.0.2-1.20170226gitc8d0893
+- Updated to 17.0.2-1.20170226gitc8d0893
+
 * Sun Jan 08 2017 Pavlo Rudyi <paulcarroty at riseup.net> - 17.0.0-1
 - Update to 17.0.0
 
