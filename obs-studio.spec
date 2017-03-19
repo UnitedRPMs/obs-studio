@@ -5,7 +5,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 17.0.2
-Release: 1.%{gitdate}git%{shortcommit0}%{dist}
+Release: 2.%{gitdate}git%{shortcommit0}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -134,6 +134,9 @@ fi
 %doc docs/html
 
 %changelog
+
+* Sat Mar 18 2017 David Vásquez <davidjeremias82 AT gmail DOT com> 17.0.2-2.20170226gitc8d0893
+- Rebuilt for libbluray
 
 * Sun Feb 26 2017 David Vásquez <davidjeremias82 AT gmail DOT com> 17.0.2-1.20170226gitc8d0893
 - Updated to 17.0.2-1.20170226gitc8d0893
