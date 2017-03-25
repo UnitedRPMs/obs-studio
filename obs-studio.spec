@@ -1,11 +1,11 @@
-%global gitdate 20170226
-%global commit0 c8d08932fb4b0362056bcd0724a2adcfabacdfba
+%global gitdate 20170325
+%global commit0 e07cb71130e3373d530c24743bdba78d8a661b0a
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 17.0.2
-Release: 2.%{gitdate}git%{shortcommit0}%{dist}
+Version: 18.0.1
+Release: 1.%{gitdate}git%{shortcommit0}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -134,6 +134,8 @@ fi
 %doc docs/html
 
 %changelog
+* Sat Mar 25 2017 Pavlo Rudyi <paulcarroty at riseup.net> - 18.0.1-1
+- Update to 18.0.1
 
 * Sat Mar 18 2017 David Vásquez <davidjeremias82 AT gmail DOT com> 17.0.2-2.20170226gitc8d0893
 - Rebuilt for libbluray
