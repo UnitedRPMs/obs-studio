@@ -111,7 +111,7 @@ fi
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 
 %files
-%doc README
+%doc README.rst
 %license UI/data/license/gplv2.txt
 %license COPYING
 %{_bindir}/obs
