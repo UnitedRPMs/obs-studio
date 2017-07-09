@@ -1,11 +1,10 @@
-%global gitdate 20170325
-%global commit0 e07cb71130e3373d530c24743bdba78d8a661b0a
+%global commit0 d295ad3ed3eafc7550ffa4280abcf116ec9bad14
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 18.0.1
-Release: 1.%{gitdate}git%{shortcommit0}%{dist}
+Version: 19.0.3
+Release: 1.git%{shortcommit0}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -134,6 +133,10 @@ fi
 %doc docs/html
 
 %changelog
+
+* Sat Jul 08 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 19.0.3-1.gitd295ad3
+- Updated to 19.0.3-1.gitd295ad3.
+
 * Sat Mar 25 2017 Pavlo Rudyi <paulcarroty at riseup.net> - 18.0.1-1
 - Update to 18.0.1
 
