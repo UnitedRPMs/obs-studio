@@ -1,10 +1,10 @@
 %global commit0 d3c163b77510359f4b2b6fb31a201141ea726c30
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-
+%global gver .git%{shortcommit0}
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 20.0.1
-Release: 1.git%{shortcommit0}%{dist}
+Release: 2%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -134,6 +134,9 @@ fi
 
 %changelog
 
+* Wed Oct 18 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> 20.0.1-2.gitd3c163b  
+- Automatic Mass Rebuild
+
 * Tue Sep 26 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 20.0.1-1.gitd3c163b
 - Updated to 20.0.1-1.gitd3c163b
 
@@ -213,4 +216,3 @@ fi
 
 * Wed May 27 2015 Momcilo Medic <fedorauser@fedoraproject.org> - 0.10.1-0.1
 - Initial .spec file
-
