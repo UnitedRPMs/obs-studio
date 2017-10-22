@@ -3,8 +3,8 @@
 %global gver .git%{shortcommit0}
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 20.0.1
-Release: 2%{gver}%{dist}
+Version: 20.1.0
+Release: 1%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -133,6 +133,9 @@ fi
 %doc docs/html
 
 %changelog
+
+* Sun Oct 22 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 20.1.0-1.git7bd06e7
+- Updated to 20.1.0-1.git7bd06e7
 
 * Wed Oct 18 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> 20.0.1-2.gitd3c163b  
 - Automatic Mass Rebuild
