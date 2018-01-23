@@ -1,0 +1,7 @@
+BUILD/*
+BUILDROOT/*
+RPMS/*
+SPECS/*
+SRPMS/*
+obs-studio*.tar.gz
+.directory
