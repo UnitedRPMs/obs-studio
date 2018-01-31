@@ -1,9 +1,9 @@
-%global commit0 4eb5be4903008c7f1b0bb1e67bbb84bbee6aa7ae
+%global commit0 ac6b01897fe0d8dfc89b91a5b21e1a73c7cc64dc
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 21.0.1
+Version: 21.0.2
 Release: 2%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
@@ -69,7 +69,7 @@ The %{name}-doc package contains html documentation
 that use %{name}.
 
 %prep
-%autosetup -n %{name}-%{commit0}
+%autosetup -n %{name}-%{commit0} 
 
 # rpmlint reports E: hardcoded-library-path
 # replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
@@ -133,6 +133,9 @@ fi
 %doc docs/html
 
 %changelog
+
+* Mon Jan 22 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 21.0.2-2.gitac6b018
+- Updated to 21.0.2-2.gitac6b018
 
 * Mon Jan 22 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 21.0.1-2.git4eb5be4
 - Updated to 21.0.1-2.git4eb5be4
