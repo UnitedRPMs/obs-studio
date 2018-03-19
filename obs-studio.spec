@@ -1,14 +1,14 @@
-%global commit0 aa58b9cf5f3e030958d23b6d147439e09e49d485
+%global commit0 a81de7fb61a32ec13439883830449f555473755b
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 21.0.3
+Version: 21.1.0
 Release: 2%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
-Source0:  https://github.com/jp9000/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+Source0:  https://github.com/obsproject/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 BuildRequires: cmake 
 BuildRequires: gcc 
 BuildRequires: gcc-c++
@@ -133,6 +133,9 @@ fi
 %doc docs/html
 
 %changelog
+
+* Mon Mar 19 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 21.1.0-2.gita81de7f
+- Updated to 21.1.0-2.gita81de7f
 
 * Mon Feb 26 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 21.0.3-2.gitaa58b9c
 - Updated to 21.0.3-2.gitaa58b9c
