@@ -4,7 +4,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 21.1.1
-Release: 2%{gver}%{dist}
+Release: 3%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -14,7 +14,7 @@ BuildRequires: gcc
 BuildRequires: gcc-c++
 BuildRequires: gcc-objc 
 BuildRequires: pkgconfig 
-BuildRequires: ffmpeg-devel 
+BuildRequires: ffmpeg-devel >= 4.0 
 BuildRequires: jansson-devel 
 BuildRequires: pulseaudio-libs-devel
 BuildRequires: jack-audio-connection-kit-devel 
@@ -133,6 +133,9 @@ fi
 %doc docs/html
 
 %changelog
+
+* Thu Apr 26 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 21.1.1-3.gitfa90926  
+- Automatic Mass Rebuild
 
 * Wed Mar 21 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 21.1.1-2.gitfa90926
 - Updated to 21.1.1-2.gitfa90926
