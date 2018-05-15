@@ -1,9 +1,9 @@
-%global commit0 fa9092653361635738ba0f6ffd8472d8df906b02
+%global commit0 5dbf8e713fa8ca238cc9a76433dd030971381c6c
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 21.1.1
+Version: 21.1.2
 Release: 3%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
@@ -133,6 +133,9 @@ fi
 %doc docs/html
 
 %changelog
+
+* Mon May 14 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 21.1.2-3.git5dbf8e7  
+- Updated to 21.1.2
 
 * Thu Apr 26 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 21.1.1-3.gitfa90926  
 - Automatic Mass Rebuild
