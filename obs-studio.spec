@@ -4,7 +4,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 22.0.3
-Release: 4%{gver}%{dist}
+Release: 5%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -133,6 +133,9 @@ fi
 %doc docs/html
 
 %changelog
+
+* Fri Oct 05 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 22.0.3-5.git6523a29  
+- Automatic Mass Rebuild
 
 * Fri Sep 07 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 22.0.3-4.git6523a29  
 - Updated to 22.0.3-4.git6523a29
