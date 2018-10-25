@@ -4,11 +4,12 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 22.0.3
-Release: 5%{gver}%{dist}
+Release: 6%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
 Source0:  https://github.com/obsproject/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+Source1:  obs-studio-snapshot
 BuildRequires: cmake 
 BuildRequires: gcc 
 BuildRequires: gcc-c++
@@ -69,11 +70,17 @@ The %{name}-doc package contains html documentation
 that use %{name}.
 
 %prep
-%autosetup -n %{name}-%{commit0} 
+
+# We need some sub-modules
+%{S:1} -c %{commit0}
+%setup -T -D -n %{name}-%{shortcommit0} 
 
 # rpmlint reports E: hardcoded-library-path
 # replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
 sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
+
+# libobs multilib
+sed -i 's|lib/pkgconfig|%{_lib}/pkgconfig|g' libobs/CMakeLists.txt
 
 %build
 %cmake -DOBS_VERSION_OVERRIDE=%{version} -DUNIX_STRUCTURE=1
@@ -128,11 +135,15 @@ fi
 %{_libdir}/cmake/LibObs/
 %{_libdir}/*.so
 %{_includedir}/obs/
+%{_libdir}/pkgconfig/libobs.pc
 
 %files doc
 %doc docs/html
 
 %changelog
+
+* Mon Oct 22 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 22.0.3-6.git6523a29  
+- Added some plugins missed
 
 * Fri Oct 05 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 22.0.3-5.git6523a29  
 - Automatic Mass Rebuild
