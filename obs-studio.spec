@@ -1,21 +1,25 @@
-%global commit0 6523a293b26afcc647d62fe39f0f7d959320ad12
+%global commit0 7246caae0fc25346067d84e9126ded51bf686f18
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 22.0.3
-Release: 7%{gver}%{dist}
+Release: 8%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
 Source0:  https://github.com/obsproject/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 Source1:  obs-studio-snapshot
-BuildRequires: cmake 
+Patch:	obs-ffmpeg-mux.patch
+BuildRequires: cmake3 
+BuildRequires: ninja-build
 BuildRequires: gcc 
 BuildRequires: gcc-c++
 BuildRequires: gcc-objc 
 BuildRequires: pkgconfig 
 BuildRequires: ffmpeg-devel >= 4.1 
+BuildRequires: fdk-aac-devel
+BuildRequires: nvenc
 BuildRequires: jansson-devel 
 BuildRequires: pulseaudio-libs-devel
 BuildRequires: jack-audio-connection-kit-devel 
@@ -39,8 +43,9 @@ BuildRequires: ImageMagick-devel
 BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
 BuildRequires: systemd-devel
-BuildRequires:  doxygen 
+BuildRequires: doxygen 
 Requires:      ffmpeg x264
+Requires:      %{name}-libs = %{version}-%{release}
 
 %description
 Open Broadcaster Software is free and open source
@@ -73,7 +78,7 @@ that use %{name}.
 
 # We need some sub-modules
 %{S:1} -c %{commit0}
-%setup -T -D -n %{name}-%{shortcommit0} 
+%autosetup -T -D -n %{name}-%{shortcommit0} -p1 
 
 # rpmlint reports E: hardcoded-library-path
 # replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
@@ -83,14 +88,17 @@ sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
 sed -i 's|lib/pkgconfig|%{_lib}/pkgconfig|g' libobs/CMakeLists.txt
 
 %build
-%cmake -DOBS_VERSION_OVERRIDE=%{version} -DUNIX_STRUCTURE=1
-%make_build
+%cmake3 -DOBS_VERSION_OVERRIDE=%{version} -DUNIX_STRUCTURE=1 -GNinja \
+        -DENABLE_SCRIPTING:BOOL=FALSE \
+        -DOpenGL_GL_PREFERENCE=GLVND
+
+%ninja_build
 
 # build docs
 doxygen
 
 %install
-%make_install
+%ninja_install
 
 mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
 mv -f %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux \
@@ -98,8 +106,6 @@ mv -f %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux \
 
 %check
 /usr/bin/desktop-file-validate %{buildroot}/%{_datadir}/applications/obs.desktop
-
-%post libs -p /sbin/ldconfig
 
 %post
 /usr/bin/update-desktop-database >&/dev/null || :
@@ -112,10 +118,11 @@ if [ $1 -eq 0 ]; then
   /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 fi
 
-%postun libs -p /sbin/ldconfig
 
 %posttrans
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
+
+%ldconfig_scriptlets libs
 
 %files
 %doc README.rst
@@ -141,6 +148,10 @@ fi
 %doc docs/html
 
 %changelog
+
+* Thu Jan 03 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 22.0.3-8.git7246caa 
+- Updated to current commit
+- obs-ffmpeg plugin fixed
 
 * Thu Dec 06 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 22.0.3-7.git6523a29  
 - Rebuilt for ffmpeg
