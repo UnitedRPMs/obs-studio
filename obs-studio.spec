@@ -1,9 +1,9 @@
-%global commit0 8181f776093bde3d078709e4b5d50cba50cad92c
+%global commit0 f2d7f5b2e713266138df656121da35ff89407991
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 23.0.0
+Version: 23.0.1
 Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
@@ -148,6 +148,9 @@ fi
 %doc docs/html
 
 %changelog
+
+* Fri Mar 01 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 23.0.1-7.git8181f77
+- Updated to 23.0.1
 
 * Mon Feb 25 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 23.0.0-7.git8181f77
 - Updated to 23.0.0
