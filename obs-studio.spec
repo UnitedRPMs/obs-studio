@@ -149,7 +149,7 @@ fi
 
 %changelog
 
-* Fri Mar 01 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 23.0.1-7.git8181f77
+* Fri Mar 01 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 23.0.1-7.gitf2d7f5b
 - Updated to 23.0.1
 
 * Mon Feb 25 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 23.0.0-7.git8181f77
