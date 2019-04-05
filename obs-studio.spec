@@ -44,6 +44,8 @@ BuildRequires: freetype-devel
 BuildRequires: fontconfig-devel
 BuildRequires: systemd-devel
 BuildRequires: doxygen 
+BuildRequires: mbedtls-devel
+BuildRequires: pkgconfig(Qt5Svg)
 Requires:      ffmpeg x264
 Requires:      %{name}-libs = %{version}-%{release}
 
