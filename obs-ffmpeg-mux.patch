@@ -1,20 +1,6 @@
---- a/plugins/obs-ffmpeg/obs-ffmpeg-mux.c
-+++ b/plugins/obs-ffmpeg/obs-ffmpeg-mux.c
-@@ -235,8 +235,11 @@
-		aencoders[num_tracks] = aencoder;
-		num_tracks++;
-	}
--
-+#ifdef FFMPEG_MUX_FIXED
-+	dstr_init_copy(cmd, FFMPEG_MUX_FIXED);
-+#else
-	dstr_init_move_array(cmd, obs_module_file(FFMPEG_MUX));
-+#endif
- 	dstr_insert_ch(cmd, 0, '\"');
-	dstr_cat(cmd, "\" \"");
-
---- a/CMakeLists.txt	2019-04-13 11:41:03.537479763 -0600
-+++ b/NEW.txt	2019-04-13 22:01:38.821845527 -0600
+diff -ruN orig/CMakeLists.txt new/CMakeLists.txt
+--- orig/CMakeLists.txt	2019-06-15 17:17:13.000000000 -0600
++++ new/CMakeLists.txt	2019-06-15 17:18:02.409138484 -0600
 @@ -31,6 +31,7 @@
  include(ObsHelpers)
  include(ObsCpack)
@@ -23,3 +9,17 @@
  
  # Must be a string in the format of "x.x.x-rcx"
  if(DEFINED RELEASE_CANDIDATE)
+diff -ruN orig/plugins/obs-ffmpeg/obs-ffmpeg-mux.c new/plugins/obs-ffmpeg/obs-ffmpeg-mux.c
+--- orig/plugins/obs-ffmpeg/obs-ffmpeg-mux.c	2019-06-15 17:17:14.000000000 -0600
++++ new/plugins/obs-ffmpeg/obs-ffmpeg-mux.c	2019-06-15 17:23:06.318162758 -0600
+@@ -237,7 +237,11 @@
+ 		num_tracks++;
+ 	}
+ 
++#ifdef FFMPEG_MUX_FIXED
++	dstr_init_copy(cmd, FFMPEG_MUX_FIXED);
++#else
+ 	dstr_init_move_array(cmd, os_get_executable_path_ptr(FFMPEG_MUX));
++#endif
+ 	dstr_insert_ch(cmd, 0, '\"');
+ 	dstr_cat(cmd, "\" \"");

@@ -1,9 +1,9 @@
-%global commit0 6550c0dfaaf3b02da6c58bcdde7735682daf2dce
+%global commit0 02e523c125e20291adc6118419a5c9e78115e75c
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 23.1.0
+Version: 23.2.1
 Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
@@ -102,12 +102,12 @@ doxygen
 %install
 %ninja_install
 
-mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
-mv -f %{buildroot}/%{_datadir}/obs/obs-plugins/obs-ffmpeg/ffmpeg-mux \
-      %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/ffmpeg-mux
+#mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
+#mv -f %{buildroot}/%{_bindir}/obs-ffmpeg-mux \  
+#      %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/obs-ffmpeg-mux
 
 %check
-/usr/bin/desktop-file-validate %{buildroot}/%{_datadir}/applications/obs.desktop
+/usr/bin/desktop-file-validate %{buildroot}/%{_datadir}/applications/*.desktop
 
 %post
 /usr/bin/update-desktop-database >&/dev/null || :
@@ -131,10 +131,12 @@ fi
 %license UI/data/license/gplv2.txt
 %license COPYING
 %{_bindir}/obs
-%{_datadir}/applications/obs.desktop
-%{_datadir}/icons/hicolor/256x256/apps/obs.png
+%{_bindir}/obs-ffmpeg-mux
+%{_datadir}/applications/*.desktop
+%{_datadir}/icons/hicolor/256x256/apps/*.png
 %{_datadir}/obs/
-%{_libexecdir}/obs-plugins/
+#{_libexecdir}/obs-plugins/obs-ffmpeg/obs-ffmpeg-mux
+%{_datadir}/metainfo/*.appdata.xml
 
 %files libs
 %{_libdir}/obs-plugins/
@@ -150,6 +152,9 @@ fi
 %doc docs/html
 
 %changelog
+
+* Sat Jun 15 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 23.2.1-7.git02e523c
+- Updated to 23.2.1
 
 * Wed Apr 10 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 23.1.0-7.git6550c0d
 - Updated to 23.1.0
