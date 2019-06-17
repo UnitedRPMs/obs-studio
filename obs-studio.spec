@@ -10,7 +10,7 @@ URL: https://obsproject.com/
 License: GPLv2+ 
 Source0:  https://github.com/obsproject/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 Source1:  obs-studio-snapshot
-Patch:	obs-ffmpeg-mux.patch
+# Patch:	obs-ffmpeg-mux.patch
 BuildRequires: cmake3 
 BuildRequires: ninja-build
 BuildRequires: gcc 
@@ -80,7 +80,7 @@ that use %{name}.
 
 # We need some sub-modules
 %{S:1} -c %{commit0}
-%autosetup -T -D -n %{name}-%{shortcommit0} -p1 
+%autosetup -T -D -n %{name}-%{shortcommit0}  
 
 # rpmlint reports E: hardcoded-library-path
 # replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
