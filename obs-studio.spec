@@ -1,9 +1,9 @@
-%global commit0 02e523c125e20291adc6118419a5c9e78115e75c
+%global commit0 94570478b7d1f8c097a0bf8d8dabfb5613e4ab92
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 23.2.1
+Version: 24.0.1
 Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
@@ -18,7 +18,7 @@ BuildRequires: gcc-c++
 BuildRequires: gcc-objc 
 BuildRequires: pkgconfig 
 BuildRequires: ffmpeg-devel >= 4.1 
-BuildRequires: fdk-aac-devel
+BuildRequires: fdk-aac-free-devel
 BuildRequires: nvenc
 BuildRequires: jansson-devel 
 BuildRequires: pulseaudio-libs-devel
@@ -152,6 +152,9 @@ fi
 %doc docs/html
 
 %changelog
+
+* Tue Oct 01 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 24.0.1-7.git9457047
+- Updated 24.0.1
 
 * Sat Jun 15 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 23.2.1-7.git02e523c
 - Updated to 23.2.1

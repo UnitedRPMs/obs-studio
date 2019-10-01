@@ -3,5 +3,6 @@ BUILDROOT/*
 RPMS/*
 SPECS/*
 SRPMS/*
-obs-studio*.tar.gz
+*.tar.gz
 .directory
+*.rpm
