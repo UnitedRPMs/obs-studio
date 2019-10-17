@@ -89,6 +89,8 @@ sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
 # libobs multilib
 sed -i 's|lib/pkgconfig|%{_lib}/pkgconfig|g' libobs/CMakeLists.txt
 
+cp -f UI/xdg-data/obs.desktop UI/xdg-data/com.obsproject.Studio.desktop
+
 %build
 %cmake3 -DOBS_VERSION_OVERRIDE=%{version} -DUNIX_STRUCTURE=1 -GNinja \
         -DENABLE_SCRIPTING:BOOL=FALSE \
@@ -106,8 +108,8 @@ doxygen
 #mv -f %{buildroot}/%{_bindir}/obs-ffmpeg-mux \  
 #      %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/obs-ffmpeg-mux
 
-%check
-/usr/bin/desktop-file-validate %{buildroot}/%{_datadir}/applications/*.desktop
+#check
+#/usr/bin/desktop-file-validate %{buildroot}/%{_datadir}/applications/*.desktop
 
 %post
 /usr/bin/update-desktop-database >&/dev/null || :
@@ -153,8 +155,8 @@ fi
 
 %changelog
 
-* Mon Oct 14 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 24.0.2-7.gitd88a5a5
-- Updated 24.0.2
+* Mon Oct 14 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 24.0.3-7.gitd88a5a5
+- Updated 24.0.3
 
 * Tue Oct 01 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 24.0.1-7.git9457047
 - Updated 24.0.1
