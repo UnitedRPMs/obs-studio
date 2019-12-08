@@ -1,9 +1,9 @@
-%global commit0 d88a5a5a60bcdcbdde6d5dc54dc352ae8d431070
+%global commit0 22bddd0270bfccc7c37c5423e632903c641b73b0
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 24.0.3
+Version: 24.0.4
 Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
@@ -89,7 +89,7 @@ sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
 # libobs multilib
 sed -i 's|lib/pkgconfig|%{_lib}/pkgconfig|g' libobs/CMakeLists.txt
 
-cp -f UI/xdg-data/obs.desktop UI/xdg-data/com.obsproject.Studio.desktop
+#cp -f UI/xdg-data/com.obsproject.Studio UI/xdg-data/com.obsproject.Studio.desktop
 
 %build
 %cmake3 -DOBS_VERSION_OVERRIDE=%{version} -DUNIX_STRUCTURE=1 -GNinja \
@@ -154,6 +154,9 @@ fi
 %doc docs/html
 
 %changelog
+
+* Fri Dec 06 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 24.0.4-7.git22bddd0
+- Updated 24.0.4
 
 * Mon Oct 14 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 24.0.3-7.gitd88a5a5
 - Updated 24.0.3
