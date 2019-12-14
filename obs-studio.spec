@@ -1,14 +1,14 @@
-%global commit0 22bddd0270bfccc7c37c5423e632903c641b73b0
+%global commit0 99638ba69782bdb10531a305093bbd25e5d3baef
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 24.0.4
+Version: 24.0.5
 Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
-Source0:  https://github.com/obsproject/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+Source0:  https://github.com/obsproject/obs-studio/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 Source1:  obs-studio-snapshot
 # Patch:	obs-ffmpeg-mux.patch
 BuildRequires: cmake3 
@@ -154,6 +154,9 @@ fi
 %doc docs/html
 
 %changelog
+
+* Fri Dec 13 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 24.0.5-7.git99638ba
+- Updated 24.0.5
 
 * Fri Dec 06 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 24.0.4-7.git22bddd0
 - Updated 24.0.4
