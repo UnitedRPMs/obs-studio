@@ -1,6 +1,10 @@
 %global commit0 327a6f599e7ae1d48a288ec3885ff3cd8b7bf538
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
+
+%define _legacy_common_support 1
+
+
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 25.0.0
