@@ -1,20 +1,20 @@
-%global commit0 e3c63c003a7e8b5681bed4265b32f3a0fecf914a
+%global commit0 355cd6ccc0f8435fc1d45043e2ffa1f74ee36b94
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 %define _legacy_common_support 1
-
+%global _hardened_build 1
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 25.0.6
+Version: 25.0.7
 Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
 Source0:  https://github.com/obsproject/obs-studio/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 Source1:  obs-studio-snapshot
-# Patch:	obs-ffmpeg-mux.patch
+Source2:  https://github.com/mixer/ftl-sdk/archive/v0.9.14.tar.gz
 BuildRequires: cmake3 
 BuildRequires: ninja-build
 BuildRequires: gcc 
@@ -50,6 +50,17 @@ BuildRequires: systemd-devel
 BuildRequires: doxygen 
 BuildRequires: mbedtls-devel
 BuildRequires: pkgconfig(Qt5Svg)
+BuildRequires: libcurl-devel
+BuildRequires: jansson-devel
+BuildRequires: swig
+BuildRequires: speexdsp-devel
+
+# plugins support
+BuildRequires: cef-minimal 
+BuildRequires: fdk-aac-free
+BuildRequires: vlc-devel
+BuildRequires: alsa-lib-devel
+
 Requires:      ffmpeg x264
 Requires:      %{name}-libs = %{version}-%{release}
 
@@ -93,20 +104,28 @@ sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
 # libobs multilib
 sed -i 's|lib/pkgconfig|%{_lib}/pkgconfig|g' libobs/CMakeLists.txt
 
-#cp -f UI/xdg-data/com.obsproject.Studio UI/xdg-data/com.obsproject.Studio.desktop
+#rm -rf plugins/obs-outputs/ftl-sdk 
+#tar xmzvf %{S:2} -C plugins/obs-outputs/
+#pushd plugins/obs-outputs/
+#mv -f ftl-sdk-0.9.14 ftl-sdk
+#popd
+
 
 %build
-%cmake3 -DOBS_VERSION_OVERRIDE=%{version} -DUNIX_STRUCTURE=1 -GNinja \
-        -DENABLE_SCRIPTING:BOOL=FALSE \
-        -DOpenGL_GL_PREFERENCE=GLVND
 
-%ninja_build
+mkdir build && pushd build
+%cmake3 -DBUILD_CAPTIONS=ON -DOBS_VERSION_OVERRIDE=%{version} -DBUILD_BROWSER=ON  -DUNIX_STRUCTURE=1 -DENABLE_SCRIPTING:BOOL=FALSE -DCEF_ROOT_DIR="/opt/cef" -Wno-dev ..       
+        
+make
+
+popd
 
 # build docs
 doxygen
 
 %install
-%ninja_install
+pushd build
+%make_install
 
 #mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
 #mv -f %{buildroot}/%{_bindir}/obs-ffmpeg-mux \  
@@ -158,6 +177,10 @@ fi
 %doc docs/html
 
 %changelog
+
+* Wed Apr 22 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 25.0.7-7.git355cd6c
+- Updated to 25.0.7
+- Enabled browser, Vlc and fdk-aac-free plugins
 
 * Wed Apr 15 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 25.0.6-7.gite3c63c0
 - Updated 25.0.6
