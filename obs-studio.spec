@@ -8,7 +8,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 25.0.8
-Release: 7%{gver}%{dist}
+Release: 8%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -21,7 +21,7 @@ BuildRequires: gcc
 BuildRequires: gcc-c++
 BuildRequires: gcc-objc 
 BuildRequires: pkgconfig 
-BuildRequires: ffmpeg-devel >= 4.1 
+BuildRequires: ffmpeg-devel >= 4.3 
 BuildRequires: fdk-aac-free-devel
 BuildRequires: nvenc
 BuildRequires: jansson-devel 
@@ -54,6 +54,7 @@ BuildRequires: libcurl-devel
 BuildRequires: jansson-devel
 BuildRequires: swig
 BuildRequires: speexdsp-devel
+BuildRequires: doxygen
 
 # plugins support
 BuildRequires: cef-minimal 
@@ -121,7 +122,7 @@ make
 popd
 
 # build docs
-doxygen
+#doxygen
 
 %install
 pushd build
@@ -173,10 +174,13 @@ fi
 %{_includedir}/obs/
 %{_libdir}/pkgconfig/libobs.pc
 
-%files doc
-%doc docs/html
+#files doc
+#doc docs/html
 
 %changelog
+
+* Tue Jun 23 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 25.0.8-8.git4c0d4a1
+- Rebuilt for ffmpeg
 
 * Mon Apr 27 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 25.0.8-7.git4c0d4a1
 - Updated to 25.0.8
