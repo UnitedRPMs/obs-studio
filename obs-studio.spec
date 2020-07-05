@@ -8,7 +8,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 25.0.8
-Release: 8%{gver}%{dist}
+Release: 9%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -36,7 +36,7 @@ BuildRequires: libxcb-devel
 BuildRequires: libX11-devel 
 BuildRequires: libcurl-devel 
 BuildRequires: libv4l-devel 
-BuildRequires: x264-devel >= 0.157
+BuildRequires: x264-devel >= 0.159
 BuildRequires: git
 BuildRequires: desktop-file-utils
 BuildRequires: libXcomposite-devel
@@ -178,6 +178,9 @@ fi
 #doc docs/html
 
 %changelog
+
+* Sat Jul 04 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 25.0.8-9.git4c0d4a1
+- Rebuilt for x264
 
 * Tue Jun 23 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 25.0.8-8.git4c0d4a1
 - Rebuilt for ffmpeg
