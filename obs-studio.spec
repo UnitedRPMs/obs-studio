@@ -8,7 +8,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 25.0.8
-Release: 9%{gver}%{dist}
+Release: 10%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -179,7 +179,7 @@ fi
 
 %changelog
 
-* Sat Jul 04 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 25.0.8-9.git4c0d4a1
+* Sat Jul 04 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 25.0.8-10.git4c0d4a1
 - Rebuilt for x264
 
 * Tue Jun 23 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 25.0.8-8.git4c0d4a1
