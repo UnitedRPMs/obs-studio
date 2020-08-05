@@ -1,14 +1,18 @@
-%global commit0 4c0d4a1d8e1433897dcbbff6084b0f38a421f231
+%global commit0 1aee73fcfc63c3fa29ed15184f4e7f4798773cfd
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 %define _legacy_common_support 1
 %global _hardened_build 1
 
+# Reduce compression level and build time
+%define _source_payload w5.gzdio
+%define _binary_payload w5.gzdio
+
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 25.0.8
-Release: 10%{gver}%{dist}
+Release: 11%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -55,6 +59,7 @@ BuildRequires: jansson-devel
 BuildRequires: swig
 BuildRequires: speexdsp-devel
 BuildRequires: doxygen
+BuildRequires: make
 
 # plugins support
 BuildRequires: cef-minimal 
@@ -100,7 +105,7 @@ that use %{name}.
 
 # rpmlint reports E: hardcoded-library-path
 # replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
-sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
+#sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
 
 # libobs multilib
 sed -i 's|lib/pkgconfig|%{_lib}/pkgconfig|g' libobs/CMakeLists.txt
@@ -113,13 +118,21 @@ sed -i 's|lib/pkgconfig|%{_lib}/pkgconfig|g' libobs/CMakeLists.txt
 
 
 %build
+mkdir -p build; cd build
 
-mkdir build && pushd build
-%cmake3 -DBUILD_CAPTIONS=ON -DOBS_VERSION_OVERRIDE=%{version} -DBUILD_BROWSER=ON  -DUNIX_STRUCTURE=1 -DENABLE_SCRIPTING:BOOL=FALSE -DCEF_ROOT_DIR="/opt/cef" -Wno-dev ..       
+cmake -DCMAKE_INSTALL_PREFIX="/usr" \
+ -DCMAKE_INSTALL_LIBDIR=%{_libdir} \
+ -DOBS_MULTIARCH_SUFFIX="%(echo %{_lib} | sed -e 's/lib//')" \
+ -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF \
+ -DBUILD_CAPTIONS=ON \
+ -DOBS_VERSION_OVERRIDE=%{version} \
+ -DBUILD_BROWSER=ON  \
+ -DUNIX_STRUCTURE=1 \
+ -DENABLE_SCRIPTING:BOOL=FALSE \
+ -DCEF_ROOT_DIR="/opt/cef" -Wno-dev ..      
         
-make
+%make_build
 
-popd
 
 # build docs
 #doxygen
@@ -178,6 +191,9 @@ fi
 #doc docs/html
 
 %changelog
+
+* Mon Aug 03 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 25.0.8-11.git1aee73f
+- Rebuilt 
 
 * Sat Jul 04 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 25.0.8-10.git4c0d4a1
 - Rebuilt for x264
