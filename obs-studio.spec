@@ -1,4 +1,4 @@
-%global commit0 1aee73fcfc63c3fa29ed15184f4e7f4798773cfd
+%global commit0 288a84dc95b65c724da34fea38ca2c88fc268664
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -11,8 +11,8 @@
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 25.0.8
-Release: 11%{gver}%{dist}
+Version: 26.0.0
+Release: 1%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -69,6 +69,8 @@ BuildRequires: alsa-lib-devel
 
 Requires:      ffmpeg x264
 Requires:      %{name}-libs = %{version}-%{release}
+Recommends:    v4l2loopback
+Recommends:    v4l2loopback-dkms
 
 %description
 Open Broadcaster Software is free and open source
@@ -191,6 +193,9 @@ fi
 #doc docs/html
 
 %changelog
+
+* Tue Sep 01 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 26.0.0-1.git288a84d
+- Updated to 26.0.0
 
 * Mon Aug 03 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 25.0.8-11.git1aee73f
 - Rebuilt 
