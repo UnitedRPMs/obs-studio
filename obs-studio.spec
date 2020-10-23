@@ -12,13 +12,13 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 26.0.2
-Release: 7%{gver}%{dist}
+Release: 9%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
 Source0:  https://github.com/obsproject/obs-studio/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 Source1:  obs-studio-snapshot
-Source2:  https://github.com/mixer/ftl-sdk/archive/v0.9.14.tar.gz
+#Source2:  https://github.com/mixer/ftl-sdk/archive/v0.9.14.tar.gz
 BuildRequires: cmake3 
 BuildRequires: ninja-build
 BuildRequires: gcc 
@@ -54,7 +54,6 @@ BuildRequires: systemd-devel
 BuildRequires: doxygen 
 BuildRequires: mbedtls-devel
 BuildRequires: pkgconfig(Qt5Svg)
-BuildRequires: libcurl-devel
 BuildRequires: jansson-devel
 BuildRequires: swig
 BuildRequires: speexdsp-devel
@@ -193,6 +192,9 @@ fi
 #doc docs/html
 
 %changelog
+
+* Thu Oct 22 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 26.0.2-9.git3486c0b
+- Enabled ftl-sdk plugin missed
 
 * Sat Oct 10 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 26.0.2-7.git3486c0b
 - Updated to 26.0.2

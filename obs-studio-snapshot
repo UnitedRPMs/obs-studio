@@ -41,5 +41,11 @@ popd
 pushd ${name}-${shortcommit}/plugins
 git submodule init && git submodule update
 popd
+pushd ${name}-${shortcommit}/plugins/obs-outputs
+git submodule init && git submodule update
+popd
+pushd ${name}-${shortcommit}/plugins/obs-outputs/ftl-sdk
+git submodule init && git submodule update
+popd
 tar -cvzf ${name}-${shortcommit}.tar.gz ${name}-${shortcommit}
 
