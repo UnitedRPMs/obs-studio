@@ -1,4 +1,4 @@
-%global commit0 3486c0b3633a8ff2b36170d56f37705fe7061349
+%global commit0 8d58578f6dc497bf218fd082261f7ae19ed698dc
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -11,8 +11,8 @@
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 26.0.2
-Release: 9%{gver}%{dist}
+Version: 26.1.0
+Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -40,7 +40,7 @@ BuildRequires: libxcb-devel
 BuildRequires: libX11-devel 
 BuildRequires: libcurl-devel 
 BuildRequires: libv4l-devel 
-BuildRequires: x264-devel >= 0.159
+BuildRequires: x264-devel >= 1:0.161
 BuildRequires: git
 BuildRequires: desktop-file-utils
 BuildRequires: libXcomposite-devel
@@ -192,6 +192,9 @@ fi
 #doc docs/html
 
 %changelog
+
+* Fri Nov 27 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 26.1.0-7.git8d58578
+- Updated to 26.1.0
 
 * Thu Oct 22 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 26.0.2-9.git3486c0b
 - Enabled ftl-sdk plugin missed
