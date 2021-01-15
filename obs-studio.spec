@@ -1,4 +1,4 @@
-%global commit0 38ad3ba18fc27846e122bd56f589ccb34c4578e2
+%global commit0 2597ed0eccfaa1de1eb9bd6f0bed24cb51c2ae96
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -11,8 +11,8 @@
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 26.1.0
-Release: 8%{gver}%{dist}
+Version: 26.1.2
+Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -192,6 +192,9 @@ fi
 #doc docs/html
 
 %changelog
+
+* Mon Jan 11 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 26.1.2-7.git2597ed0
+- Updated to 26.1.2
 
 * Sun Dec 20 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 26.1.0-8.git38ad3ba
 - Updated to stable release
