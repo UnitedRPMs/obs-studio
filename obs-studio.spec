@@ -1,4 +1,4 @@
-%global commit0 2597ed0eccfaa1de1eb9bd6f0bed24cb51c2ae96
+%global commit0 1064cd26f173f52d336ff1984e699f13da866c12
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -11,8 +11,8 @@
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 26.1.2
-Release: 7%{gver}%{dist}
+Version: 27.0.0
+Release: 0.1%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -29,8 +29,13 @@ BuildRequires: ffmpeg-devel >= 4.3
 BuildRequires: fdk-aac-free-devel
 BuildRequires: nvenc
 BuildRequires: jansson-devel 
-BuildRequires: pulseaudio-libs-devel
+BuildRequires: wayland-devel
+BuildRequires: qt5-qtbase-private-devel
+%if 0%{?fedora} >= 34
+BuildRequires: pkgconfig(libpipewire-0.3)
+%endif
 BuildRequires: jack-audio-connection-kit-devel 
+BuildRequires: pulseaudio-libs-devel
 BuildRequires: qt5-qtbase-devel 
 BuildRequires: qt5-qtx11extras-devel 
 BuildRequires: zlib-devel 
@@ -119,9 +124,9 @@ sed -i 's|lib/pkgconfig|%{_lib}/pkgconfig|g' libobs/CMakeLists.txt
 
 
 %build
-mkdir -p build; cd build
+mkdir -p build
 
-cmake -DCMAKE_INSTALL_PREFIX="/usr" \
+cmake -B build -DCMAKE_INSTALL_PREFIX="/usr" \
  -DCMAKE_INSTALL_LIBDIR=%{_libdir} \
  -DOBS_MULTIARCH_SUFFIX="%(echo %{_lib} | sed -e 's/lib//')" \
  -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF \
@@ -130,17 +135,21 @@ cmake -DCMAKE_INSTALL_PREFIX="/usr" \
  -DBUILD_BROWSER=ON  \
  -DUNIX_STRUCTURE=1 \
  -DENABLE_SCRIPTING:BOOL=FALSE \
- -DCEF_ROOT_DIR="/opt/cef" -Wno-dev ..      
+%if 0%{?fedora} >= 34
+ -DENABLE_PIPEWIRE=ON \
+ %else
+ -DENABLE_PIPEWIRE=OFF \
+ %endif
+ -DCEF_ROOT_DIR="/opt/cef" -Wno-dev       
         
-%make_build
+%make_build -C build
 
 
 # build docs
 #doxygen
 
 %install
-pushd build
-%make_install
+%make_install -C build
 
 #mkdir -p %{buildroot}/%{_libexecdir}/obs-plugins/obs-ffmpeg/
 #mv -f %{buildroot}/%{_bindir}/obs-ffmpeg-mux \  
@@ -192,6 +201,11 @@ fi
 #doc docs/html
 
 %changelog
+
+* Sat Apr 10 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.0.0-0.1.git1064cd2
+- Updated to 27.0.0 RC1
+- Pipeware enabled F34 and Rawhide
+- Wayland support
 
 * Mon Jan 11 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 26.1.2-7.git2597ed0
 - Updated to 26.1.2
