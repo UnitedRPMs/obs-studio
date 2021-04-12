@@ -12,7 +12,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 27.0.0
-Release: 0.1%{gver}%{dist}
+Release: 0.2%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -66,10 +66,11 @@ BuildRequires: doxygen
 BuildRequires: make
 
 # plugins support
-BuildRequires: cef-minimal 
+BuildRequires: cef-minimal >= 88.2.8
 BuildRequires: fdk-aac-free
 BuildRequires: vlc-devel
 BuildRequires: alsa-lib-devel
+BuildRequires: libftl-devel
 
 Requires:      ffmpeg x264
 Requires:      %{name}-libs = %{version}-%{release}
@@ -202,7 +203,7 @@ fi
 
 %changelog
 
-* Sat Apr 10 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.0.0-0.1.git1064cd2
+* Sat Apr 10 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.0.0-0.2.git1064cd2
 - Updated to 27.0.0 RC1
 - Pipeware enabled F34 and Rawhide
 - Wayland support
