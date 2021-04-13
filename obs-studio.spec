@@ -70,7 +70,7 @@ BuildRequires: cef-minimal >= 88.2.8
 BuildRequires: fdk-aac-free
 BuildRequires: vlc-devel
 BuildRequires: alsa-lib-devel
-BuildRequires: libftl-devel
+#BuildRequires: libftl-devel
 
 Requires:      ffmpeg x264
 Requires:      %{name}-libs = %{version}-%{release}
