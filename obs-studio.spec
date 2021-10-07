@@ -1,4 +1,4 @@
-%global commit0 9deb8fe292cc3d66245d84899b6983053539dc3d
+%global commit0 3c14e4ece250a862a5fa62aa7e85f476f7545ca4
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -9,9 +9,29 @@
 %define _source_payload w5.gzdio
 %define _binary_payload w5.gzdio
 
+# Plugins
+
+# https://github.com/exeldro/obs-move-transition/releases
+%global mv_tra 2.5.1
+
+# https://github.com/exeldro/obs-audio-monitor
+%global commit1 0bd32be9df2789b479ee933687d210d50491b3ba
+%global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
+%global gver .git%{shortcommit1}
+
+# https://github.com/exeldro/obs-downstream-keyer
+%global commit2 f73deed2076ff4359d9d8beb4040393520fd63a7
+%global shortcommit2 %(c=%{commit2}; echo ${c:0:7})
+%global gver .git%{shortcommit2}
+
+# https://github.com/exeldro/obs-time-warp-scan
+%global commit3 630637ea3a5768e99dd43c772fb0e6766406717b
+%global shortcommit3 %(c=%{commit3}; echo ${c:0:7})
+%global gver .git%{shortcommit3}
+
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 27.1.1
+Version: 27.1.3
 Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
@@ -19,6 +39,12 @@ License: GPLv2+
 Source0:  https://github.com/obsproject/obs-studio/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 Source1:  obs-studio-snapshot
 #Source2:  https://github.com/mixer/ftl-sdk/archive/v0.9.14.tar.gz
+Source3:  https://github.com/exeldro/obs-move-transition/archive/refs/tags/%{mv_tra}.tar.gz#/obs-move-transition-%{mv_tra}.tar.gz
+Source4:  https://github.com/exeldro/obs-audio-monitor/archive/0bd32be9df2789b479ee933687d210d50491b3ba.zip#/obs-audio-monitor-%{shortcommit1}.tar.gz
+Source5:  https://github.com/exeldro/obs-downstream-keyer/archive/f73deed2076ff4359d9d8beb4040393520fd63a7.zip#/obs-downstream-keyer-%{shortcommit2}.tar.gz
+Source6:  https://github.com/exeldro/obs-time-warp-scan/archive/630637ea3a5768e99dd43c772fb0e6766406717b.zip#/obs-time-warp-scan-%{shortcommit3}.tar.gz
+
+Patch:    plugins.patch
 BuildRequires: cmake3 
 BuildRequires: ninja-build
 BuildRequires: gcc 
@@ -64,6 +90,8 @@ BuildRequires: swig
 BuildRequires: speexdsp-devel
 BuildRequires: doxygen
 BuildRequires: make
+BuildRequires: libftl-devel
+BuildRequires: unzip
 
 # plugins support
 BuildRequires: cef-minimal >= 88.2.8
@@ -76,6 +104,7 @@ Requires:      ffmpeg x264
 Requires:      %{name}-libs = %{version}-%{release}
 Recommends:    v4l2loopback
 Recommends:    v4l2loopback-dkms
+Recommends:    droidcam-obs-plugin
 
 %description
 Open Broadcaster Software is free and open source
@@ -108,7 +137,7 @@ that use %{name}.
 
 # We need some sub-modules
 %{S:1} -c %{commit0}
-%autosetup -T -D -n %{name}-%{shortcommit0}  
+%autosetup -T -D -n %{name}-%{shortcommit0} -p1 -a3
 
 # rpmlint reports E: hardcoded-library-path
 # replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
@@ -123,6 +152,11 @@ sed -i 's|lib/pkgconfig|%{_lib}/pkgconfig|g' libobs/CMakeLists.txt
 #mv -f ftl-sdk-0.9.14 ftl-sdk
 #popd
 
+# Plugins
+cp -rf obs-move-transition-%{mv_tra} plugins/
+unzip %{S:6} && cp -rf obs-time-warp-scan-%{commit3}  plugins/time-warp-scan
+unzip %{S:4} && cp -rf obs-audio-monitor-%{commit1} UI/frontend-plugins/audio-monitor
+unzip %{S:5} && cp -rf obs-downstream-keyer-%{commit2} UI/frontend-plugins/downstream-keyer
 
 %build
 mkdir -p build
@@ -202,6 +236,10 @@ fi
 #doc docs/html
 
 %changelog
+
+* Wed Oct 06 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.1.3-7.git3c14e4e
+- Updated to 27.1.3
+- Enabled plugins move-transition, obs-audio-monitor, obs-downstream-keyer and obs-time-warp-scan
 
 * Thu Sep 30 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.1.1-7.git9deb8fe
 - Updated to 27.1.1
