@@ -1,18 +1,17 @@
 diff -ruN orig/plugins/CMakeLists.txt new/plugins/CMakeLists.txt
 --- orig/plugins/CMakeLists.txt	2021-10-04 11:38:39.000000000 -0600
-+++ new/plugins/CMakeLists.txt	2021-10-07 00:26:32.821135933 -0600
++++ new/plugins/CMakeLists.txt	2021-10-09 01:07:59.352120967 -0600
 @@ -91,3 +91,5 @@
  add_subdirectory(obs-text)
  add_subdirectory(rtmp-services)
  add_subdirectory(text-freetype2)
-+add_subdirectory(obs-move-transition-2.5.1)
++add_subdirectory(obs-move-transition)
 +add_subdirectory(time-warp-scan)
 diff -ruN orig/UI/frontend-plugins/CMakeLists.txt new/UI/frontend-plugins/CMakeLists.txt
 --- orig/UI/frontend-plugins/CMakeLists.txt	2021-10-04 11:38:39.000000000 -0600
-+++ new/UI/frontend-plugins/CMakeLists.txt	2021-10-06 12:48:08.139660945 -0600
-@@ -1,3 +1,5 @@
++++ new/UI/frontend-plugins/CMakeLists.txt	2021-10-09 00:00:29.398227466 -0600
+@@ -1,3 +1,4 @@
  add_subdirectory(decklink-output-ui)
  add_subdirectory(frontend-tools)
  add_subdirectory(decklink-captions)
-+add_subdirectory(audio-monitor)
 +add_subdirectory(downstream-keyer)
