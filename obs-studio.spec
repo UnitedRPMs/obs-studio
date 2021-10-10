@@ -14,8 +14,8 @@
 # https://github.com/exeldro/obs-move-transition/releases
 %global mv_tra 2.5.1
 
-# https://github.com/exeldro/obs-audio-monitor
-%global commit1 0bd32be9df2789b479ee933687d210d50491b3ba
+# https://github.com/Xaymar/obs-StreamFX
+%global commit1 a96151a8742e9b4cebf8121c9edd23bcd6f2d51e
 %global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
 %global gver .git%{shortcommit1}
 
@@ -32,7 +32,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 27.1.3
-Release: 8%{gver}%{dist}
+Release: 9%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -40,9 +40,15 @@ Source0:  https://github.com/obsproject/obs-studio/archive/%{commit0}.tar.gz#/%{
 Source1:  obs-studio-snapshot
 #Source2:  https://github.com/mixer/ftl-sdk/archive/v0.9.14.tar.gz
 Source3:  https://github.com/exeldro/obs-move-transition/archive/refs/tags/%{mv_tra}.tar.gz#/obs-move-transition-%{mv_tra}.tar.gz
-#Source4:  https://github.com/exeldro/obs-audio-monitor/archive/0bd32be9df2789b479ee933687d210d50491b3ba.zip#/obs-audio-monitor-%{shortcommit1}.tar.gz
-Source5:  https://github.com/exeldro/obs-downstream-keyer/archive/f73deed2076ff4359d9d8beb4040393520fd63a7.zip#/obs-downstream-keyer-%{shortcommit2}.tar.gz
-Source6:  https://github.com/exeldro/obs-time-warp-scan/archive/630637ea3a5768e99dd43c772fb0e6766406717b.zip#/obs-time-warp-scan-%{shortcommit3}.tar.gz
+Source4:  https://github.com/Xaymar/obs-StreamFX/archive/%{commit1}.zip#/obs-StreamFX-%{shortcommit1}.tar.gz
+Source5:  https://github.com/exeldro/obs-downstream-keyer/archive/%{commit2}.zip#/obs-downstream-keyer-%{shortcommit2}.tar.gz
+Source6:  https://github.com/exeldro/obs-time-warp-scan/archive/%{commit3}.zip#/obs-time-warp-scan-%{shortcommit3}.tar.gz
+
+# obs-StreamFX/third-party/
+Source7:  https://github.com/Xaymar/msvc-redist-helper/archive/aa4665ccf68a382f1c2b115fb6c9668b6a8bd64d.zip#/msvc-redist-helper
+Source8:  https://github.com/nlohmann/json/archive/db78ac1d7716f56fc9f1b030b715f872f93964e4.zip#/nlohmann
+Source9:  https://github.com/NVIDIA/MAXINE-AR-SDK/archive/c4154fa68fc2f91a26f2475e3cf98f64c50483b7.zip#/MAXINE-AR-SDK
+Source10:  https://github.com/NVIDIA/MAXINE-VFX-SDK/archive/7f69da2ee4dcb02e6b024b3f40c5892de84fcb45.zip#/MAXINE-VFX-SDK
 
 Patch:    plugins.patch
 BuildRequires: cmake3 
@@ -90,15 +96,15 @@ BuildRequires: swig
 BuildRequires: speexdsp-devel
 BuildRequires: doxygen
 BuildRequires: make
-BuildRequires: libftl-devel
 BuildRequires: unzip
+BuildRequires: libaom-devel
 
 # plugins support
 BuildRequires: cef-minimal >= 88.2.8
 BuildRequires: fdk-aac-free
 BuildRequires: vlc-devel
 BuildRequires: alsa-lib-devel
-#BuildRequires: libftl-devel
+BuildRequires: libftl-devel
 
 Requires:      ffmpeg x264
 Requires:      %{name}-libs = %{version}-%{release}
@@ -155,8 +161,15 @@ sed -i 's|lib/pkgconfig|%{_lib}/pkgconfig|g' libobs/CMakeLists.txt
 # Plugins
 cp -rf obs-move-transition-%{mv_tra} plugins/obs-move-transition
 unzip %{S:6} && cp -rf obs-time-warp-scan-%{commit3}  plugins/time-warp-scan
-#unzip %{S:4} && cp -rf obs-audio-monitor-%{commit1} UI/frontend-plugins/audio-monitor
+unzip %{S:4} && cp -rf obs-StreamFX-%{commit1} plugins/StreamFX
 unzip %{S:5} && cp -rf obs-downstream-keyer-%{commit2} UI/frontend-plugins/downstream-keyer
+
+# obs-StreamFX/third-party/
+rm -rf plugins/StreamFX/third-party/*
+unzip %{S:7} && mv -f msvc-redist-helper-aa4665ccf68a382f1c2b115fb6c9668b6a8bd64d plugins/StreamFX/third-party/msvc-redist-helper
+unzip %{S:8} && mv -f json-db78ac1d7716f56fc9f1b030b715f872f93964e4 plugins/StreamFX/third-party/nlohmann-json
+unzip %{S:9} && mv -f MAXINE-AR-SDK-c4154fa68fc2f91a26f2475e3cf98f64c50483b7 plugins/StreamFX/third-party/nvidia-arsdk
+unzip %{S:10} && mv -f MAXINE-VFX-SDK-7f69da2ee4dcb02e6b024b3f40c5892de84fcb45 plugins/StreamFX/third-party/nvidia-maxine-vfx-sdk
 
 %build
 mkdir -p build
@@ -236,6 +249,9 @@ fi
 #doc docs/html
 
 %changelog
+
+* Sun Oct 10 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.1.3-9.git3c14e4e
+- Enabled StreamFX plugin
 
 * Fri Oct 08 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.1.3-8.git3c14e4e
 - Rebuilt
