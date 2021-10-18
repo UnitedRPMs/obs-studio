@@ -14,6 +14,12 @@
 # https://github.com/exeldro/obs-move-transition/releases
 %global mv_tra 2.5.1
 
+# https://github.com/sorayuki/obs-multi-rtmp
+%global mt_rtmp 0.2.7.1
+
+# https://github.com/Qufyy/obs-scale-to-sound
+%global os_ts 1.0.0
+
 # https://github.com/Xaymar/obs-StreamFX
 %global commit1 a96151a8742e9b4cebf8121c9edd23bcd6f2d51e
 %global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
@@ -38,19 +44,21 @@ URL: https://obsproject.com/
 License: GPLv2+ 
 Source0:  https://github.com/obsproject/obs-studio/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 Source1:  obs-studio-snapshot
-#Source2:  https://github.com/mixer/ftl-sdk/archive/v0.9.14.tar.gz
+#Source2:  https://github.com/sorayuki/obs-multi-rtmp/archive/refs/tags/%{mt_rtmp}.zip#/obs-multi-rtmp-%{mt_rtmp}.tar.gz
 Source3:  https://github.com/exeldro/obs-move-transition/archive/refs/tags/%{mv_tra}.tar.gz#/obs-move-transition-%{mv_tra}.tar.gz
 Source4:  https://github.com/Xaymar/obs-StreamFX/archive/%{commit1}.zip#/obs-StreamFX-%{shortcommit1}.tar.gz
 Source5:  https://github.com/exeldro/obs-downstream-keyer/archive/%{commit2}.zip#/obs-downstream-keyer-%{shortcommit2}.tar.gz
 Source6:  https://github.com/exeldro/obs-time-warp-scan/archive/%{commit3}.zip#/obs-time-warp-scan-%{shortcommit3}.tar.gz
+Source11:  https://github.com/Qufyy/obs-scale-to-sound/archive/refs/tags/%{os_ts}.zip#/obs-scale-to-sound-%{os_ts}.tar.gz
 
 # obs-StreamFX/third-party/
 Source7:  https://github.com/Xaymar/msvc-redist-helper/archive/aa4665ccf68a382f1c2b115fb6c9668b6a8bd64d.zip#/msvc-redist-helper
 Source8:  https://github.com/nlohmann/json/archive/db78ac1d7716f56fc9f1b030b715f872f93964e4.zip#/nlohmann
 Source9:  https://github.com/NVIDIA/MAXINE-AR-SDK/archive/c4154fa68fc2f91a26f2475e3cf98f64c50483b7.zip#/MAXINE-AR-SDK
 Source10:  https://github.com/NVIDIA/MAXINE-VFX-SDK/archive/7f69da2ee4dcb02e6b024b3f40c5892de84fcb45.zip#/MAXINE-VFX-SDK
-
+%if 0%{?fedora} >= 34
 Patch:    plugins.patch
+%endif
 BuildRequires: cmake3 
 BuildRequires: ninja-build
 BuildRequires: gcc 
@@ -152,16 +160,12 @@ that use %{name}.
 # libobs multilib
 sed -i 's|lib/pkgconfig|%{_lib}/pkgconfig|g' libobs/CMakeLists.txt
 
-#rm -rf plugins/obs-outputs/ftl-sdk 
-#tar xmzvf %{S:2} -C plugins/obs-outputs/
-#pushd plugins/obs-outputs/
-#mv -f ftl-sdk-0.9.14 ftl-sdk
-#popd
-
 # Plugins
 cp -rf obs-move-transition-%{mv_tra} plugins/obs-move-transition
-unzip %{S:6} && cp -rf obs-time-warp-scan-%{commit3}  plugins/time-warp-scan
+#unzip %{S:2} && cp -rf obs-multi-rtmp-%{mt_rtmp}  plugins/multi-rtmp
 unzip %{S:4} && cp -rf obs-StreamFX-%{commit1} plugins/StreamFX
+unzip %{S:6} && cp -rf obs-time-warp-scan-%{commit3}  plugins/time-warp-scan
+unzip %{S:11} && cp -rf obs-scale-to-sound-%{os_ts}  plugins/scale-to-sound
 unzip %{S:5} && cp -rf obs-downstream-keyer-%{commit2} UI/frontend-plugins/downstream-keyer
 
 # obs-StreamFX/third-party/
@@ -251,7 +255,7 @@ fi
 %changelog
 
 * Sun Oct 10 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.1.3-9.git3c14e4e
-- Enabled StreamFX plugin
+- Enabled StreamFX and Scale To sound plugin 
 
 * Fri Oct 08 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.1.3-8.git3c14e4e
 - Rebuilt
