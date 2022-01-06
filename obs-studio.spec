@@ -1,9 +1,11 @@
-%global commit0 3c14e4ece250a862a5fa62aa7e85f476f7545ca4
+%global commit0 a5a8a7c32fd6de5bfb7b3001ea5f7cc570c46a13
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
+
 %define _legacy_common_support 1
 %global _hardened_build 1
+%define debug_package %{nil}
 
 # Reduce compression level and build time
 %define _source_payload w5.gzdio
@@ -12,21 +14,21 @@
 # Plugins
 
 # https://github.com/exeldro/obs-move-transition/releases
-%global mv_tra 2.5.1
+%global mv_tra 2.5.3
 
 # https://github.com/sorayuki/obs-multi-rtmp
-%global mt_rtmp 0.2.7.1
+%global mt_rtmp 0.2.8
 
 # https://github.com/Qufyy/obs-scale-to-sound
-%global os_ts 1.0.0
+%global os_ts 1.1.0
 
 # https://github.com/Xaymar/obs-StreamFX
-%global commit1 a96151a8742e9b4cebf8121c9edd23bcd6f2d51e
+%global commit1 31d56703185a780336f2232ed636b200b91ab1bf
 %global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
 %global gver .git%{shortcommit1}
 
 # https://github.com/exeldro/obs-downstream-keyer
-%global commit2 f73deed2076ff4359d9d8beb4040393520fd63a7
+%global commit2 9d5b21ba49f2853004755c654af5bc708c796982
 %global shortcommit2 %(c=%{commit2}; echo ${c:0:7})
 %global gver .git%{shortcommit2}
 
@@ -35,16 +37,20 @@
 %global shortcommit3 %(c=%{commit3}; echo ${c:0:7})
 %global gver .git%{shortcommit3}
 
+# https://github.com/obsproject/obs-vst/
+%global commit4 1dde4c37a5d40dc1486c84ee544531cf807ca35d
+%global shortcommit4 %(c=%{commit4}; echo ${c:0:7})
+
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 27.1.3
-Release: 9%{gver}%{dist}
+Version: 27.2
+Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
 Source0:  https://github.com/obsproject/obs-studio/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 Source1:  obs-studio-snapshot
-#Source2:  https://github.com/sorayuki/obs-multi-rtmp/archive/refs/tags/%{mt_rtmp}.zip#/obs-multi-rtmp-%{mt_rtmp}.tar.gz
+Source2:  https://github.com/obsproject/obs-vst/archive/%{commit4}/obs-vst-%{shortcommit4}.tar.gz
 Source3:  https://github.com/exeldro/obs-move-transition/archive/refs/tags/%{mv_tra}.tar.gz#/obs-move-transition-%{mv_tra}.tar.gz
 Source4:  https://github.com/Xaymar/obs-StreamFX/archive/%{commit1}.zip#/obs-StreamFX-%{shortcommit1}.tar.gz
 Source5:  https://github.com/exeldro/obs-downstream-keyer/archive/%{commit2}.zip#/obs-downstream-keyer-%{shortcommit2}.tar.gz
@@ -52,13 +58,10 @@ Source6:  https://github.com/exeldro/obs-time-warp-scan/archive/%{commit3}.zip#/
 Source11:  https://github.com/Qufyy/obs-scale-to-sound/archive/refs/tags/%{os_ts}.zip#/obs-scale-to-sound-%{os_ts}.tar.gz
 
 # obs-StreamFX/third-party/
-Source7:  https://github.com/Xaymar/msvc-redist-helper/archive/aa4665ccf68a382f1c2b115fb6c9668b6a8bd64d.zip#/msvc-redist-helper
-Source8:  https://github.com/nlohmann/json/archive/db78ac1d7716f56fc9f1b030b715f872f93964e4.zip#/nlohmann
-Source9:  https://github.com/NVIDIA/MAXINE-AR-SDK/archive/c4154fa68fc2f91a26f2475e3cf98f64c50483b7.zip#/MAXINE-AR-SDK
-Source10:  https://github.com/NVIDIA/MAXINE-VFX-SDK/archive/7f69da2ee4dcb02e6b024b3f40c5892de84fcb45.zip#/MAXINE-VFX-SDK
-%if 0%{?fedora} >= 34
+Source7:  obs-streamfx-snapshot
+
 Patch:    plugins.patch
-%endif
+
 BuildRequires: cmake3 
 BuildRequires: ninja-build
 BuildRequires: gcc 
@@ -68,12 +71,17 @@ BuildRequires: pkgconfig
 BuildRequires: ffmpeg-devel >= 4.3 
 BuildRequires: fdk-aac-free-devel
 BuildRequires: nvenc
+BuildRequires: nv-codec-headers srt-devel svt-av1-devel
 BuildRequires: jansson-devel 
 BuildRequires: wayland-devel
 BuildRequires: qt5-qtbase-private-devel
+BuildRequires: qt5-qtsvg-devel
+BuildRequires: qt5-qtwayland-devel
 %if 0%{?fedora} >= 34
 BuildRequires: pkgconfig(libpipewire-0.3)
 %endif
+BuildRequires: libsndfile
+BuildRequires: flac-libs
 BuildRequires: jack-audio-connection-kit-devel 
 BuildRequires: pulseaudio-libs-devel
 BuildRequires: qt5-qtbase-devel 
@@ -85,6 +93,7 @@ BuildRequires: libxcb-devel
 BuildRequires: libX11-devel 
 BuildRequires: libcurl-devel 
 BuildRequires: libv4l-devel 
+BuildRequires: luajit-devel
 BuildRequires: x264-devel >= 1:0.161
 BuildRequires: git
 BuildRequires: desktop-file-utils
@@ -99,6 +108,8 @@ BuildRequires: systemd-devel
 BuildRequires: doxygen 
 BuildRequires: mbedtls-devel
 BuildRequires: pkgconfig(Qt5Svg)
+BuildRequires: pkgconfig(xkbcommon)
+BuildRequires: pkgconfig(libpci)
 BuildRequires: jansson-devel
 BuildRequires: swig
 BuildRequires: speexdsp-devel
@@ -113,6 +124,11 @@ BuildRequires: fdk-aac-free
 BuildRequires: vlc-devel
 BuildRequires: alsa-lib-devel
 BuildRequires: libftl-devel
+
+# new
+BuildRequires: automoc
+BuildRequires: at-spi2-atk-devel nss-devel libXScrnSaver-devel
+BuildRequires: libajantv2
 
 Requires:      ffmpeg x264
 Requires:      %{name}-libs = %{version}-%{release}
@@ -153,27 +169,21 @@ that use %{name}.
 %{S:1} -c %{commit0}
 %autosetup -T -D -n %{name}-%{shortcommit0} -p1 -a3
 
-# rpmlint reports E: hardcoded-library-path
-# replace OBS_MULTIARCH_SUFFIX by LIB_SUFFIX
-#sed -i 's|OBS_MULTIARCH_SUFFIX|LIB_SUFFIX|g' cmake/Modules/ObsHelpers.cmake
-
 # libobs multilib
 sed -i 's|lib/pkgconfig|%{_lib}/pkgconfig|g' libobs/CMakeLists.txt
 
 # Plugins
+echo 'add_subdirectory(StreamFX)' >> plugins/CMakeLists.txt
 cp -rf obs-move-transition-%{mv_tra} plugins/obs-move-transition
-#unzip %{S:2} && cp -rf obs-multi-rtmp-%{mt_rtmp}  plugins/multi-rtmp
+tar -xf %{S:2} -C plugins/obs-vst --strip-components=1
 unzip %{S:4} && cp -rf obs-StreamFX-%{commit1} plugins/StreamFX
 unzip %{S:6} && cp -rf obs-time-warp-scan-%{commit3}  plugins/time-warp-scan
 unzip %{S:11} && cp -rf obs-scale-to-sound-%{os_ts}  plugins/scale-to-sound
 unzip %{S:5} && cp -rf obs-downstream-keyer-%{commit2} UI/frontend-plugins/downstream-keyer
 
 # obs-StreamFX/third-party/
-rm -rf plugins/StreamFX/third-party/*
-unzip %{S:7} && mv -f msvc-redist-helper-aa4665ccf68a382f1c2b115fb6c9668b6a8bd64d plugins/StreamFX/third-party/msvc-redist-helper
-unzip %{S:8} && mv -f json-db78ac1d7716f56fc9f1b030b715f872f93964e4 plugins/StreamFX/third-party/nlohmann-json
-unzip %{S:9} && mv -f MAXINE-AR-SDK-c4154fa68fc2f91a26f2475e3cf98f64c50483b7 plugins/StreamFX/third-party/nvidia-arsdk
-unzip %{S:10} && mv -f MAXINE-VFX-SDK-7f69da2ee4dcb02e6b024b3f40c5892de84fcb45 plugins/StreamFX/third-party/nvidia-maxine-vfx-sdk
+%{S:7} -c %{commit1}
+rm -rf plugins/StreamFX && mv -f obs-StreamFX-%{shortcommit1} plugins/StreamFX
 
 %build
 mkdir -p build
@@ -181,19 +191,27 @@ mkdir -p build
 cmake -B build -DCMAKE_INSTALL_PREFIX="/usr" \
  -DCMAKE_INSTALL_LIBDIR=%{_libdir} \
  -DOBS_MULTIARCH_SUFFIX="%(echo %{_lib} | sed -e 's/lib//')" \
- -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF \
- -DBUILD_CAPTIONS=ON \
+ -DCMAKE_AR=%{_bindir}/gcc-ar \
+ -DCMAKE_RANLIB=%{_bindir}/gcc-ranlib \
+ -DCMAKE_NM=%{_bindir}/gcc-nm \
+ -DUNIX_STRUCTURE=ON \
+ -DCMAKE_BUILD_TYPE=Release \
+ -DCMAKE_VERBOSE_MAKEFILE=OFF \
  -DOBS_VERSION_OVERRIDE=%{version} \
  -DBUILD_BROWSER=ON  \
- -DUNIX_STRUCTURE=1 \
- -DENABLE_SCRIPTING:BOOL=FALSE \
+ -DENABLE_SCRIPTING=OFF \
 %if 0%{?fedora} >= 34
  -DENABLE_PIPEWIRE=ON \
  %else
  -DENABLE_PIPEWIRE=OFF \
  %endif
- -DCEF_ROOT_DIR="/opt/cef" -Wno-dev       
-        
+ -DBUILD_VST=ON \
+ -DBUILD_CAPTIONS=ON \
+ -DCEF_ROOT_DIR="/opt/cef" -Wno-dev 
+    
+#  -DDISABLE_DECKLINK=ON \  
+#  -DOpenGL_GL_PREFERENCE=GLVND \    
+# -DLIBOBS_PREFER_IMAGEMAGICK=OFF \        
 %make_build -C build
 
 
@@ -234,7 +252,8 @@ fi
 %{_bindir}/obs
 %{_bindir}/obs-ffmpeg-mux
 %{_datadir}/applications/*.desktop
-%{_datadir}/icons/hicolor/256x256/apps/*.png
+%{_datadir}/icons/hicolor/*/apps/*.png
+%{_datadir}/icons/hicolor/*/apps/*.svg
 %{_datadir}/obs/
 #{_libexecdir}/obs-plugins/obs-ffmpeg/obs-ffmpeg-mux
 %{_datadir}/metainfo/*.appdata.xml
@@ -253,6 +272,9 @@ fi
 #doc docs/html
 
 %changelog
+
+* Sat Jan 01 2022 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.2-7.git1dd9612
+- Updated to 27.2
 
 * Sun Oct 10 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.1.3-9.git3c14e4e
 - Enabled StreamFX and Scale To sound plugin 
