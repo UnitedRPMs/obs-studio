@@ -1,4 +1,4 @@
-%global commit0 a5a8a7c32fd6de5bfb7b3001ea5f7cc570c46a13
+%global commit0 3aa90f70765955be685516855f9479f1dbd121c6
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -44,7 +44,7 @@
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
 Version: 27.2
-Release: 7%{gver}%{dist}
+Release: 8%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -68,7 +68,7 @@ BuildRequires: gcc
 BuildRequires: gcc-c++
 BuildRequires: gcc-objc 
 BuildRequires: pkgconfig 
-BuildRequires: ffmpeg-devel >= 4.3 
+BuildRequires: ffmpeg4-devel  
 BuildRequires: fdk-aac-free-devel
 BuildRequires: nvenc
 BuildRequires: nv-codec-headers srt-devel svt-av1-devel
@@ -130,7 +130,6 @@ BuildRequires: automoc
 BuildRequires: at-spi2-atk-devel nss-devel libXScrnSaver-devel
 BuildRequires: libajantv2
 
-Requires:      ffmpeg x264
 Requires:      %{name}-libs = %{version}-%{release}
 Recommends:    v4l2loopback
 Recommends:    v4l2loopback-dkms
@@ -272,6 +271,9 @@ fi
 #doc docs/html
 
 %changelog
+
+* Sat Jan 22 2022 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.2-8.git3aa90f7
+- Updated to 27.2 Release Candidate 1
 
 * Sat Jan 01 2022 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.2-7.git1dd9612
 - Updated to 27.2
