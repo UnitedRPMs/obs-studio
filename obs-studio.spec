@@ -1,4 +1,4 @@
-%global commit0 3aa90f70765955be685516855f9479f1dbd121c6
+%global commit0 acad9dbaf7bcf8f567c3e5c613411ca04ba92fa9
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -14,16 +14,16 @@
 # Plugins
 
 # https://github.com/exeldro/obs-move-transition/releases
-%global mv_tra 2.5.3
+%global mv_tra 2.5.7
 
 # https://github.com/sorayuki/obs-multi-rtmp
 %global mt_rtmp 0.2.8
 
 # https://github.com/Qufyy/obs-scale-to-sound
-%global os_ts 1.1.0
+%global os_ts 1.2.0
 
 # https://github.com/Xaymar/obs-StreamFX
-%global commit1 31d56703185a780336f2232ed636b200b91ab1bf
+%global commit1 1b80a1485cb85129fbebd60596d250e7d2162bfa
 %global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
 %global gver .git%{shortcommit1}
 
@@ -38,13 +38,13 @@
 %global gver .git%{shortcommit3}
 
 # https://github.com/obsproject/obs-vst/
-%global commit4 1dde4c37a5d40dc1486c84ee544531cf807ca35d
+%global commit4 8ad3f64e702ac4f1799b209a511620eb1d096a01
 %global shortcommit4 %(c=%{commit4}; echo ${c:0:7})
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 27.2
-Release: 8%{gver}%{dist}
+Version: 27.2.1
+Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
 License: GPLv2+ 
@@ -117,6 +117,8 @@ BuildRequires: doxygen
 BuildRequires: make
 BuildRequires: unzip
 BuildRequires: libaom-devel
+BuildRequires: opus
+BuildRequires: libogg
 
 # plugins support
 BuildRequires: cef-minimal >= 88.2.8
@@ -271,6 +273,12 @@ fi
 #doc docs/html
 
 %changelog
+
+* Tue Feb 22 2022 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.2.1-7.gitacad9db
+- Updated to 27.2.1
+
+* Sat Feb 19 2022 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.2-9.git9c504f4
+- Updated to 27.2 final release
 
 * Sat Jan 22 2022 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.2-8.git3aa90f7
 - Updated to 27.2 Release Candidate 1
