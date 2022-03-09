@@ -1,4 +1,4 @@
-%global commit0 acad9dbaf7bcf8f567c3e5c613411ca04ba92fa9
+%global commit0 b65ee7e7fbca05e6c4bfd55b7ff721150b3c0735
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -14,21 +14,21 @@
 # Plugins
 
 # https://github.com/exeldro/obs-move-transition/releases
-%global mv_tra 2.5.7
+%global mv_tra 2.5.8
 
 # https://github.com/sorayuki/obs-multi-rtmp
 %global mt_rtmp 0.2.8
 
 # https://github.com/Qufyy/obs-scale-to-sound
-%global os_ts 1.2.0
+%global os_ts 1.2.1
 
 # https://github.com/Xaymar/obs-StreamFX
-%global commit1 1b80a1485cb85129fbebd60596d250e7d2162bfa
+%global commit1 bf1787e5a96f4459be13308dcca74a4d57768407
 %global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
 %global gver .git%{shortcommit1}
 
 # https://github.com/exeldro/obs-downstream-keyer
-%global commit2 9d5b21ba49f2853004755c654af5bc708c796982
+%global commit2 4680636e530a6e25abdcf2c8bba54622fcc461f8
 %global shortcommit2 %(c=%{commit2}; echo ${c:0:7})
 %global gver .git%{shortcommit2}
 
@@ -43,7 +43,7 @@
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 27.2.1
+Version: 27.2.3
 Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
@@ -273,6 +273,9 @@ fi
 #doc docs/html
 
 %changelog
+
+* Sun Mar 06 2022 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.2.1-7.gitb65ee7e
+- Updated to 27.2.3
 
 * Tue Feb 22 2022 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.2.1-7.gitacad9db
 - Updated to 27.2.1
