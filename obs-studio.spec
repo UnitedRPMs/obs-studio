@@ -1,4 +1,4 @@
-%global commit0 b65ee7e7fbca05e6c4bfd55b7ff721150b3c0735
+%global commit0 aab14ba29a759037e42610f127ba844f17dbd416
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -38,12 +38,12 @@
 %global gver .git%{shortcommit3}
 
 # https://github.com/obsproject/obs-vst/
-%global commit4 8ad3f64e702ac4f1799b209a511620eb1d096a01
+%global commit4 937ba7952ddea9b8f4106dfd6f54ee0f3ef4d03d
 %global shortcommit4 %(c=%{commit4}; echo ${c:0:7})
 
 Summary: Open Broadcaster Software Studio
 Name: obs-studio
-Version: 27.2.3
+Version: 27.2.4
 Release: 7%{gver}%{dist}
 Group: Applications/Multimedia
 URL: https://obsproject.com/
@@ -66,6 +66,9 @@ BuildRequires: cmake3
 BuildRequires: ninja-build
 BuildRequires: gcc 
 BuildRequires: gcc-c++
+%if 0%{?fedora} >= 36
+BuildRequires:	annobin-plugin-gcc
+%endif
 BuildRequires: gcc-objc 
 BuildRequires: pkgconfig 
 BuildRequires: ffmpeg4-devel  
@@ -273,6 +276,9 @@ fi
 #doc docs/html
 
 %changelog
+
+* Mon Apr 18 2022 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.2.4-7.gitaab14ba
+- Updated to 27.2.4
 
 * Sun Mar 06 2022 Unitedrpms Project <unitedrpms AT protonmail DOT com> 27.2.1-7.gitb65ee7e
 - Updated to 27.2.3
