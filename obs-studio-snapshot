@@ -33,8 +33,11 @@ name=obs-studio
 
 rm -rf ${name}-${shortcommit}/
 rm -f ${name}-${shortcommit}.tar.gz
-git clone --depth 1 https://github.com/obsproject/obs-studio.git ${name}-${shortcommit}
+#--depth 1
+git clone https://github.com/obsproject/obs-studio.git ${name}-${shortcommit}
 pushd ${name}-${shortcommit}
+git init
+#git fetch origin "${commit}"
 git checkout --force "${commit}" 
 echo "You are in Commit: $( git rev-parse HEAD )"
 popd
@@ -48,4 +51,4 @@ pushd ${name}-${shortcommit}/plugins/obs-outputs/ftl-sdk
 git submodule init && git submodule update
 popd
 tar -cvzf ${name}-${shortcommit}.tar.gz ${name}-${shortcommit}
-
+echo "You are in Commit: $( git rev-parse HEAD )"

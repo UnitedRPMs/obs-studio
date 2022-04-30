@@ -23,9 +23,9 @@
 %global os_ts 1.2.1
 
 # https://github.com/Xaymar/obs-StreamFX
-%global commit1 bf1787e5a96f4459be13308dcca74a4d57768407
-%global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
-%global gver .git%{shortcommit1}
+#%global commit1 bf1787e5a96f4459be13308dcca74a4d57768407
+#%global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
+#%global gver .git%{shortcommit1}
 
 # https://github.com/exeldro/obs-downstream-keyer
 %global commit2 4680636e530a6e25abdcf2c8bba54622fcc461f8
@@ -63,15 +63,16 @@ Source7:  obs-streamfx-snapshot
 Patch:    plugins.patch
 
 BuildRequires: cmake3 
+BuildRequires: python3-devel 
 BuildRequires: ninja-build
 BuildRequires: gcc 
-BuildRequires: gcc-c++
+BuildRequires: gcc-c++ clang clang-tools-extra jansson
 %if 0%{?fedora} >= 36
 BuildRequires:	annobin-plugin-gcc
 %endif
 BuildRequires: gcc-objc 
 BuildRequires: pkgconfig 
-BuildRequires: ffmpeg4-devel  
+BuildRequires: ffmpeg-devel  
 BuildRequires: fdk-aac-free-devel
 BuildRequires: nvenc
 BuildRequires: nv-codec-headers srt-devel svt-av1-devel
@@ -192,7 +193,8 @@ rm -rf plugins/StreamFX && mv -f obs-StreamFX-%{shortcommit1} plugins/StreamFX
 %build
 mkdir -p build
 
-cmake -B build -DCMAKE_INSTALL_PREFIX="/usr" \
+cmake -B build \
+ -DCMAKE_INSTALL_PREFIX="/usr" \
  -DCMAKE_INSTALL_LIBDIR=%{_libdir} \
  -DOBS_MULTIARCH_SUFFIX="%(echo %{_lib} | sed -e 's/lib//')" \
  -DCMAKE_AR=%{_bindir}/gcc-ar \
@@ -209,14 +211,14 @@ cmake -B build -DCMAKE_INSTALL_PREFIX="/usr" \
  %else
  -DENABLE_PIPEWIRE=OFF \
  %endif
- -DBUILD_VST=ON \
- -DBUILD_CAPTIONS=ON \
- -DCEF_ROOT_DIR="/opt/cef" -Wno-dev 
+ -DENABLE_WAYLAND=ON \
+ -DBUILD_VST=OFF \
+ -DCEF_ROOT_DIR="/opt/cef" -Wno-dev
     
 #  -DDISABLE_DECKLINK=ON \  
 #  -DOpenGL_GL_PREFERENCE=GLVND \    
 # -DLIBOBS_PREFER_IMAGEMAGICK=OFF \        
-%make_build -C build
+make -C build
 
 
 # build docs
